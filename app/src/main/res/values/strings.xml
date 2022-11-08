@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mobilki</string>
+    <string name="email_hint">Email ...</string>
+    <string name="password_hint">Password ...</string>
+    <string name="log_in">Log in</string>
+    <string name="continue_as_guest">Continue as guest</string>
+    <string name="reset_password">Reset password</string>
+    <string name="register">Register</string>
+</resources>

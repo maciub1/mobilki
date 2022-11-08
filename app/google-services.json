@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "98236990119",
+    "project_id": "mobilki-caf48",
+    "storage_bucket": "mobilki-caf48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98236990119:android:bcd597d34984063e2b1182",
+        "android_client_info": {
+          "package_name": "com.example.mobilki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98236990119-52nigjkmg8o26kpnc97t6hip46k32jq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mobilki",
+            "certificate_hash": "30c51bd27b5e6acd3ad9baca501275e63c89a129"
+          }
+        },
+        {
+          "client_id": "98236990119-sr3g4n1acr1584an6fssfpjep86ejm6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb-ZYb8gB0bOlC6mPmI-AGgijHmsw2TC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98236990119-sr3g4n1acr1584an6fssfpjep86ejm6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
