@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         Button mRegisterBtn = findViewById(R.id.registerBtn);
         Button mResetBtn = findViewById(R.id.paswordResetBtn);
         Button mGuestBtn = findViewById(R.id.guestLogin);
-        mAuthListener= firebaseAuth -> {
-            if(firebaseAuth.getCurrentUser() != null){
+        mAuthListener = firebaseAuth -> {
+            if (firebaseAuth.getCurrentUser() != null) {
 
                 Intent intent = new Intent(MainActivity.this, MainScreenActivity.class);
                 finishAffinity();
@@ -81,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
         mGoogleBtn.setOnClickListener(view -> signIn());
 
         mRegisterBtn.setOnClickListener(view -> {
-            Intent registerIntent= new Intent(MainActivity.this,RegisterActivity.class);
+            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
             registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(registerIntent);
 
         });
 
         mResetBtn.setOnClickListener(view -> {
-            Intent resetIntent = new Intent(MainActivity.this,ResetPasswordActivity.class);
+            Intent resetIntent = new Intent(MainActivity.this, ResetPasswordActivity.class);
             resetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(resetIntent);
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void guestLogin() {
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, task -> {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Intent intent = new Intent(MainActivity.this, MainScreenActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -153,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    private void startSignIn(){
+    private void startSignIn() {
         String email = mEmailField.getText().toString().trim();
         String password = mPasswordField.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
             mProgress.setMessage("Sprawdzam dane logowania ...");
             mProgress.show();
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -165,13 +165,12 @@ public class MainActivity extends AppCompatActivity {
                     mProgress.dismiss();
                     checkUserExist();
 
-                }
-                else{
+                } else {
                     mProgress.dismiss();
                     Toast.makeText(MainActivity.this, "Błędne dane logowania", Toast.LENGTH_LONG).show();
                 }
             });
-        } else{
+        } else {
             Toast.makeText(MainActivity.this, "Wprowadź dane", Toast.LENGTH_LONG).show();
         }
     }
@@ -182,13 +181,13 @@ public class MainActivity extends AppCompatActivity {
         mDatabaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(user_id)){
+                if (snapshot.hasChild(user_id)) {
                     Intent intent = new Intent(MainActivity.this, MainScreenActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
 
                 } else {
-                    Intent setupIntent = new Intent(MainActivity.this,SetupActivity.class);
+                    Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
                     setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(setupIntent);
                 }
