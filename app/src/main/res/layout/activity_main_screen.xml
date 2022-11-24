@@ -167,6 +167,7 @@
 
                     <ProgressBar
                         android:id="@+id/fat_progress_bar"
+                        android:indeterminateOnly="false"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         app:layout_constraintEnd_toEndOf="parent"

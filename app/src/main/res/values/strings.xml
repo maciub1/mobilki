@@ -12,4 +12,7 @@
     <string name="fats">Fats</string>
     <string name="create_account">Create an account</string>
     <string name="log_out">Log out</string>
+    <string name="home">Home</string>
+    <string name="navigation_drawer_open">Open navigation</string>
+    <string name="navigation_drawer_close">Close navigation</string>
 </resources>
