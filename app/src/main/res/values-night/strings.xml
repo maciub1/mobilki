@@ -14,4 +14,12 @@
     <string name="home">Home</string>
     <string name="navigation_drawer_open">Open navigation</string>
     <string name="navigation_drawer_close">Close navigation</string>
+    <string name="productname">productName</string>
+    <string name="eatenBtn">Eaten</string>
+    <string name="exit">Exit</string>
+    <string name="click_back_again_to_exit">Click back again to exit app</string>
+    <string name="repeat_pass_hint">Repeat password...</string>
+    <string name="side_menu_background_content_desc">side menu background</string>
+    <string name="profile_image_desc">Profile image</string>
+    <string name="product_image_desc">Product image</string>
 </resources>

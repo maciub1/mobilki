@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/side_menu_background"
         android:scaleType="centerCrop"
-        />
+        android:contentDescription="@string/side_menu_background_content_desc" />
 
     <ImageView
         android:id="@+id/profile_img"
@@ -43,7 +43,8 @@
         android:src="@drawable/ic_home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/usernameTv"/>
+        app:layout_constraintBottom_toTopOf="@id/usernameTv"
+        android:contentDescription="@string/profile_image_desc" />
 
     <Button
         android:id="@+id/guest_log_in"

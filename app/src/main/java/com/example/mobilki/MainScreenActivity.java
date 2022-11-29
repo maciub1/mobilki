@@ -1,5 +1,6 @@
 package com.example.mobilki;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,13 +37,13 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DatabaseReference mDatabaseUsers;
     private DatabaseReference mDatabaseDiets;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private String uid;
 
     DrawerLayout drawerLayout;
@@ -71,11 +72,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private TextView usernameTv;
     private ImageView userImg;
-    private Button guestLogin;
     private RecyclerView mEatenMeals;
     private RecyclerView mObservedMeals;
-    private TextView mLoginMsg;
-    private Button mAddMealToEatenBtn;
     private static final int MEAL_REQUEST = 2;
 
     @Override
@@ -84,27 +82,17 @@ public class MainScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Intent loginIntent = new Intent(MainScreenActivity.this, MainActivity.class);
-                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(loginIntent);
-                }
-            }
-        };
 
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
         mDatabaseDiets = FirebaseDatabase.getInstance().getReference().child("Diets");
 
         mDatabaseUsers.keepSynced(true);
-        uid = mAuth.getCurrentUser().getUid();
+        uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
         mEatenMeals = findViewById(R.id.EatenMeals);
-        mLoginMsg = findViewById(R.id.loginMsg);
-        mAddMealToEatenBtn = findViewById(R.id.addMealtoEatenBtn);
+        TextView mLoginMsg = findViewById(R.id.loginMsg);
+        Button mAddMealToEatenBtn = findViewById(R.id.addMealtoEatenBtn);
         mEatenMeals.setNestedScrollingEnabled(false);
         mEatenMeals.setHasFixedSize(false);
         mEatenMeals.setLayoutManager(new LinearLayoutManager(this));
@@ -119,7 +107,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         usernameTv = header.findViewById(R.id.usernameTv);
         userImg = header.findViewById(R.id.profile_img);
-        guestLogin = header.findViewById(R.id.guest_log_in);
+        Button guestLogin = header.findViewById(R.id.guest_log_in);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -152,23 +140,17 @@ public class MainScreenActivity extends AppCompatActivity {
 
         if (!mAuth.getCurrentUser().isAnonymous()) {
             SetProfile();
-            mDatabaseUsers.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (task.getResult().hasChild("day"))
-                        day = Integer.parseInt(task.getResult().child("day").getValue().toString());
-                }
+            mDatabaseUsers.child(uid).get().addOnCompleteListener(task -> {
+                if (task.getResult().hasChild("day"))
+                    day = Integer.parseInt(task.getResult().child("day").getValue().toString());
             });
         } else {
             userImg.setImageResource(0);
             guestLogin.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_logout).setTitle(R.string.exit);
-            guestLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MainScreenActivity.this, MainActivity.class));
-                }
+            guestLogin.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainScreenActivity.this, MainActivity.class));
             });
 
         }
@@ -178,28 +160,25 @@ public class MainScreenActivity extends AppCompatActivity {
             mAddMealToEatenBtn.setVisibility(View.GONE);
             mEatenMeals.setVisibility(View.GONE);
         } else {
-            mDatabaseUsers.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    if (!task.getResult().child("last logged").getValue().toString().equals(dateFormat.format(Calendar.getInstance().getTime()))) {
-                        mDatabaseUsers.child(uid).child("last logged").setValue(dateFormat.format(Calendar.getInstance().getTime()));
-                        mDatabaseUsers.child(uid).child("Eaten").removeValue();
-                        if (task.getResult().hasChild("day")) {
-                            day = Integer.parseInt(task.getResult().child("day").getValue().toString());
-                            day++;
-                            mDatabaseDiets.child(task.getResult().child("observed diet").getValue().toString()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    if (day > task.getResult().child("Meals").getChildrenCount())
-                                        day = 1;
-                                    mDatabaseUsers.child(uid).child("day").setValue(Integer.toString(day));
+            mDatabaseUsers.child(uid).get().addOnCompleteListener(task -> {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                if (!task.getResult().child("last logged").getValue().toString().equals(dateFormat.format(Calendar.getInstance().getTime()))) {
+                    mDatabaseUsers.child(uid).child("last logged").setValue(dateFormat.format(Calendar.getInstance().getTime()));
+                    mDatabaseUsers.child(uid).child("Eaten").removeValue();
+                    if (task.getResult().hasChild("day")) {
+                        day = Integer.parseInt(task.getResult().child("day").getValue().toString());
+                        day++;
+                        mDatabaseDiets.child(task.getResult().child("observed diet").getValue().toString()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                if (day > task.getResult().child("Meals").getChildrenCount())
+                                    day = 1;
+                                mDatabaseUsers.child(uid).child("day").setValue(Integer.toString(day));
 
 
-                                }
-                            });
+                            }
+                        });
 
-                        }
                     }
                 }
             });
@@ -218,6 +197,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             String meal_key = getRef(i).getKey();
                             mealViewHolder.setName(meal.getName());
                             mealViewHolder.setImage(meal.getImage());
+                            assert meal_key != null;
                             if (!snapshot.child("Eaten").hasChild(meal_key)) {
                                 mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
                                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
@@ -241,21 +221,13 @@ public class MainScreenActivity extends AppCompatActivity {
                                 String meal_key = getRef(i).getKey();
                                 mealViewHolder2.setName(meal2.getName());
                                 mealViewHolder2.setImage(meal2.getImage());
-                                mealViewHolder2.mEatBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mDatabaseUsers.child(uid).child("Eaten").child(meal_key).setValue("meal id from observed diet");
-                                    }
-                                });
-                                mDatabaseDiets.child(snapshot.child("observed diet").getValue().toString()).child("Meals").child(Integer.toString(day)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if (snapshot.child("Eaten").hasChild(meal_key) || !task.getResult().hasChild(meal_key)) {
-                                            mealViewHolder2.mView.findViewById(R.id.observedCard).setVisibility(View.GONE);
-                                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder2.mView.getLayoutParams();
-                                            layoutParams.setMargins(0, 0, 0, 0);
-                                            mealViewHolder2.mView.setLayoutParams(layoutParams);
-                                        }
+                                mealViewHolder2.mEatBtn.setOnClickListener(v -> mDatabaseUsers.child(uid).child("Eaten").child(meal_key).setValue("meal id from observed diet"));
+                                mDatabaseDiets.child(Objects.requireNonNull(snapshot.child("observed diet").getValue()).toString()).child("Meals").child(Integer.toString(day)).get().addOnCompleteListener(task -> {
+                                    if (snapshot.child("Eaten").hasChild(meal_key) || !task.getResult().hasChild(meal_key)) {
+                                        mealViewHolder2.mView.findViewById(R.id.observedCard).setVisibility(View.GONE);
+                                        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder2.mView.getLayoutParams();
+                                        layoutParams.setMargins(0, 0, 0, 0);
+                                        mealViewHolder2.mView.setLayoutParams(layoutParams);
                                     }
                                 });
 
@@ -271,19 +243,19 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
             });
         }
-        mAddMealToEatenBtn.setOnClickListener(new View.OnClickListener() {
+        /*mAddMealToEatenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent ProductSelectIntent = new Intent(MainScreenActivity.this, MealSelectActivity.class);
                 startActivityForResult(ProductSelectIntent, MEAL_REQUEST);
             }
-        });
+        });*/
 
 
     }
 
     private void SetProfile() {
-        mDatabaseUsers.child(mAuth.getUid()).child("name").addValueEventListener(new ValueEventListener() {
+        mDatabaseUsers.child(Objects.requireNonNull(mAuth.getUid())).child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String username = snapshot.getValue(String.class);
@@ -322,12 +294,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 doubleBack = true;
                 Toast.makeText(MainScreenActivity.this, R.string.click_back_again_to_exit, Toast.LENGTH_SHORT).show();
 
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBack = false;
-                    }
-                }, 2000);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBack = false, 2000);
             }
         }
     }
@@ -340,14 +307,11 @@ public class MainScreenActivity extends AppCompatActivity {
             case R.id.nav_home:
                 //You are here
                 break;
-            case R.id.nav_diets:
+            /*case R.id.nav_diets:
                 Intent dietsIntent = new Intent(MainScreenActivity.this, DietActivity.class);
                 startActivity(dietsIntent);
                 break;
-            case R.id.nav_followed:
-                Intent dieticianintent = new Intent(MainScreenActivity.this, DieticiansActivity.class);
-                startActivity(dieticianintent);
-                break;
+
             case R.id.nav_products:
                 //Go to product activity
                 Intent intent = new Intent(MainScreenActivity.this, ProductActivity.class);
@@ -360,7 +324,7 @@ public class MainScreenActivity extends AppCompatActivity {
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainScreenActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                break;
+                break;*/
             case R.id.nav_logout:
                 //Log out user
                 //...
@@ -375,44 +339,41 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void updateProgressBars()
     {
-        mDatabaseUsers.child(uid).child("Eaten").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for(DataSnapshot meal : task.getResult().getChildren()){
-                    mDatabaseMeals.child(meal.getKey()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            progressCalories += Double.parseDouble(task.getResult().child("calories").getValue().toString());
-                            progressCarbohydrates += Double.parseDouble(task.getResult().child("carbohydrates").getValue().toString());
-                            progressFats += Double.parseDouble(task.getResult().child("fat").getValue().toString());
-                            progressProteins += Double.parseDouble(task.getResult().child("proteins").getValue().toString());
-                        }
-                    });
-                }
-                mDatabaseUsers.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        mDatabaseUsers.child(uid).child("Eaten").get().addOnCompleteListener(task -> {
+            for(DataSnapshot meal : task.getResult().getChildren()){
+                mDatabaseMeals.child(meal.getKey()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        progressCalories = (progressCalories/Integer.parseInt(task.getResult().child("calories req").getValue().toString()))*100.0;
-                        progressCarbohydrates = (progressCarbohydrates/Integer.parseInt(task.getResult().child("carbohydrates req").getValue().toString()))*100.0;
-                        progressProteins = (progressProteins/Integer.parseInt(task.getResult().child("proteins req").getValue().toString()))*100.0;
-                        progressFats = (progressFats/Integer.parseInt(task.getResult().child("fat req").getValue().toString()))*100.0;
-                        progressCalories = Math.round(progressCalories);
-                        progressCarbohydrates = Math.round(progressCarbohydrates);
-                        progressFats = Math.round(progressFats);
-                        progressProteins = Math.round(progressProteins);
-                        progressBarCalories.setProgress((int)progressCalories);
-                        progressBarCarbohydrates.setProgress((int) progressCarbohydrates);
-                        progressBarProteins.setProgress((int) progressProteins);
-                        progressBarFats.setProgress((int) progressFats);
-
-                        progressCaloriesTv.setText(Integer.toString((int)progressCalories) + "%");
-                        progressCarbohydratesTv.setText(Integer.toString( (int)progressCarbohydrates) + "%");
-                        progressProteinsTv.setText(Integer.toString((int) progressProteins) + "%");
-                        progressFatsTv.setText(Integer.toString( (int)progressFats) + "%");
+                        progressCalories += Double.parseDouble(task.getResult().child("calories").getValue().toString());
+                        progressCarbohydrates += Double.parseDouble(task.getResult().child("carbohydrates").getValue().toString());
+                        progressFats += Double.parseDouble(task.getResult().child("fat").getValue().toString());
+                        progressProteins += Double.parseDouble(task.getResult().child("proteins").getValue().toString());
                     }
                 });
-
             }
+            mDatabaseUsers.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    progressCalories = (progressCalories/Integer.parseInt(task.getResult().child("calories req").getValue().toString()))*100.0;
+                    progressCarbohydrates = (progressCarbohydrates/Integer.parseInt(task.getResult().child("carbohydrates req").getValue().toString()))*100.0;
+                    progressProteins = (progressProteins/Integer.parseInt(task.getResult().child("proteins req").getValue().toString()))*100.0;
+                    progressFats = (progressFats/Integer.parseInt(task.getResult().child("fat req").getValue().toString()))*100.0;
+                    progressCalories = Math.round(progressCalories);
+                    progressCarbohydrates = Math.round(progressCarbohydrates);
+                    progressFats = Math.round(progressFats);
+                    progressProteins = Math.round(progressProteins);
+                    progressBarCalories.setProgress((int)progressCalories);
+                    progressBarCarbohydrates.setProgress((int) progressCarbohydrates);
+                    progressBarProteins.setProgress((int) progressProteins);
+                    progressBarFats.setProgress((int) progressFats);
+
+                    progressCaloriesTv.setText((int) progressCalories + "%");
+                    progressCarbohydratesTv.setText((int) progressCarbohydrates + "%");
+                    progressProteinsTv.setText((int) progressProteins + "%");
+                    progressFatsTv.setText((int) progressFats + "%");
+                }
+            });
+
         });
 
 
@@ -448,32 +409,33 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==MEAL_REQUEST && resultCode == RESULT_OK){
+            assert data != null;
             String meal_id = data.getStringExtra("meal id");
             mDatabaseUsers.child(uid).child("Eaten").child(meal_id).setValue("meal id");
         }
     }
 
     public static class MealViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+        final View mView;
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
 
         }
         public void setName(String name){
-            TextView product_name = (TextView) mView.findViewById(R.id.productName);
+            TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
         public void setImage(String image){
-            ImageView product_image = (ImageView) mView.findViewById(R.id.productImage);
+            ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
     }
 
     public static class MealViewHolder2 extends RecyclerView.ViewHolder{
-        View mView;
-        Button mEatBtn;
+        final View mView;
+        final Button mEatBtn;
         public MealViewHolder2(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
@@ -481,12 +443,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
         }
         public void setName(String name){
-            TextView product_name = (TextView) mView.findViewById(R.id.productName2);
+            TextView product_name = mView.findViewById(R.id.productName2);
             product_name.setText(name);
         }
 
         public void setImage(String image){
-            ImageView product_image = (ImageView) mView.findViewById(R.id.productImage2);
+            ImageView product_image = mView.findViewById(R.id.productImage2);
             Picasso.get().load(image).into(product_image);
         }
     }
