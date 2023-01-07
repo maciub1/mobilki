@@ -1,6 +1,5 @@
 package com.example.mobilki;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,6 +81,13 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         setContentView(R.layout.activity_main_screen);
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth.AuthStateListener mAuthListener = firebaseAuth -> {
+            if (firebaseAuth.getCurrentUser() == null) {
+                Intent loginIntent = new Intent(MainScreenActivity.this, MainActivity.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginIntent);
+            }
+        };
 
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
@@ -168,15 +174,12 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                     if (task.getResult().hasChild("day")) {
                         day = Integer.parseInt(task.getResult().child("day").getValue().toString());
                         day++;
-                        mDatabaseDiets.child(task.getResult().child("observed diet").getValue().toString()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if (day > task.getResult().child("Meals").getChildrenCount())
-                                    day = 1;
-                                mDatabaseUsers.child(uid).child("day").setValue(Integer.toString(day));
+                        mDatabaseDiets.child(task.getResult().child("observed diet").getValue().toString()).get().addOnCompleteListener(task1 -> {
+                            if (day > task1.getResult().child("Meals").getChildrenCount())
+                                day = 1;
+                            mDatabaseUsers.child(uid).child("day").setValue(Integer.toString(day));
 
 
-                            }
                         });
 
                     }
@@ -341,37 +344,31 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
     {
         mDatabaseUsers.child(uid).child("Eaten").get().addOnCompleteListener(task -> {
             for(DataSnapshot meal : task.getResult().getChildren()){
-                mDatabaseMeals.child(meal.getKey()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        progressCalories += Double.parseDouble(task.getResult().child("calories").getValue().toString());
-                        progressCarbohydrates += Double.parseDouble(task.getResult().child("carbohydrates").getValue().toString());
-                        progressFats += Double.parseDouble(task.getResult().child("fat").getValue().toString());
-                        progressProteins += Double.parseDouble(task.getResult().child("proteins").getValue().toString());
-                    }
+                mDatabaseMeals.child(meal.getKey()).get().addOnCompleteListener(task1 -> {
+                    progressCalories += Double.parseDouble(task1.getResult().child("calories").getValue().toString());
+                    progressCarbohydrates += Double.parseDouble(task1.getResult().child("carbohydrates").getValue().toString());
+                    progressFats += Double.parseDouble(task1.getResult().child("fat").getValue().toString());
+                    progressProteins += Double.parseDouble(task1.getResult().child("proteins").getValue().toString());
                 });
             }
-            mDatabaseUsers.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    progressCalories = (progressCalories/Integer.parseInt(task.getResult().child("calories req").getValue().toString()))*100.0;
-                    progressCarbohydrates = (progressCarbohydrates/Integer.parseInt(task.getResult().child("carbohydrates req").getValue().toString()))*100.0;
-                    progressProteins = (progressProteins/Integer.parseInt(task.getResult().child("proteins req").getValue().toString()))*100.0;
-                    progressFats = (progressFats/Integer.parseInt(task.getResult().child("fat req").getValue().toString()))*100.0;
-                    progressCalories = Math.round(progressCalories);
-                    progressCarbohydrates = Math.round(progressCarbohydrates);
-                    progressFats = Math.round(progressFats);
-                    progressProteins = Math.round(progressProteins);
-                    progressBarCalories.setProgress((int)progressCalories);
-                    progressBarCarbohydrates.setProgress((int) progressCarbohydrates);
-                    progressBarProteins.setProgress((int) progressProteins);
-                    progressBarFats.setProgress((int) progressFats);
+            mDatabaseUsers.child(uid).get().addOnCompleteListener(task12 -> {
+                progressCalories = (progressCalories/Integer.parseInt(task12.getResult().child("calories req").getValue().toString()))*100.0;
+                progressCarbohydrates = (progressCarbohydrates/Integer.parseInt(task12.getResult().child("carbohydrates req").getValue().toString()))*100.0;
+                progressProteins = (progressProteins/Integer.parseInt(task12.getResult().child("proteins req").getValue().toString()))*100.0;
+                progressFats = (progressFats/Integer.parseInt(task12.getResult().child("fat req").getValue().toString()))*100.0;
+                progressCalories = Math.round(progressCalories);
+                progressCarbohydrates = Math.round(progressCarbohydrates);
+                progressFats = Math.round(progressFats);
+                progressProteins = Math.round(progressProteins);
+                progressBarCalories.setProgress((int)progressCalories);
+                progressBarCarbohydrates.setProgress((int) progressCarbohydrates);
+                progressBarProteins.setProgress((int) progressProteins);
+                progressBarFats.setProgress((int) progressFats);
 
-                    progressCaloriesTv.setText((int) progressCalories + "%");
-                    progressCarbohydratesTv.setText((int) progressCarbohydrates + "%");
-                    progressProteinsTv.setText((int) progressProteins + "%");
-                    progressFatsTv.setText((int) progressFats + "%");
-                }
+                progressCaloriesTv.setText((int) progressCalories + "%");
+                progressCarbohydratesTv.setText((int) progressCarbohydrates + "%");
+                progressProteinsTv.setText((int) progressProteins + "%");
+                progressFatsTv.setText((int) progressFats + "%");
             });
 
         });

@@ -73,7 +73,7 @@
                         android:id="@+id/calories_progress_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"
+                        android:text="@string/calories_progress"
                         app:layout_constraintBottom_toBottomOf="@+id/calories_progress_bar"
                         app:layout_constraintEnd_toEndOf="@+id/calories_progress_bar"
                         app:layout_constraintStart_toStartOf="@+id/calories_progress_bar"
@@ -120,7 +120,7 @@
                         android:id="@+id/carbohydrate_progress_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"
+                        android:text="@string/carbohydrate_progress"
                         app:layout_constraintBottom_toBottomOf="@+id/carbohydrate_progress_bar"
                         app:layout_constraintEnd_toEndOf="@+id/carbohydrate_progress_bar"
                         app:layout_constraintStart_toStartOf="@+id/carbohydrate_progress_bar"
@@ -150,7 +150,7 @@
                         android:id="@+id/protein_progress_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"
+                        android:text="@string/protein_progress"
                         app:layout_constraintBottom_toBottomOf="@+id/protein_progress_bar"
                         app:layout_constraintEnd_toEndOf="@+id/protein_progress_bar"
                         app:layout_constraintStart_toStartOf="@+id/protein_progress_bar"
@@ -180,7 +180,7 @@
                         android:id="@+id/fat_progress_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"
+                        android:text="@string/fat_progress"
                         app:layout_constraintBottom_toBottomOf="@+id/fat_progress_bar"
                         app:layout_constraintEnd_toEndOf="@+id/fat_progress_bar"
                         app:layout_constraintStart_toStartOf="@+id/fat_progress_bar"
@@ -202,7 +202,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
-                    android:text="Czy zjadłeś te posiłki z aktualnie obserwowanej diety: "
+                    android:text="@string/czy_zjad_e_te_posi_ki_z_aktualnie_obserwowanej_diety"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -219,7 +219,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Zjedzone posiłki:"
+                    android:text="@string/eaten_meals_label"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -227,7 +227,7 @@
                     android:id="@+id/loginMsg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Zaloguj się aby dodawać posiłki które zjadłeś"
+                    android:text="@string/Log_in_to_add_meals"
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -242,7 +242,7 @@
                     android:id="@+id/addMealtoEatenBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dodaj posiłek" />
+                    android:text="@string/add_meal_label" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

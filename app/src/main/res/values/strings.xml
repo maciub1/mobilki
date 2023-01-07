@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mobilki</string>
-    <string name="email_hint">Email ...</string>
-    <string name="password_hint">Password ...</string>
+    <string name="email_hint">Email …</string>
+    <string name="password_hint">Password …</string>
     <string name="log_in">Log in</string>
     <string name="continue_as_guest">Continue as guest</string>
     <string name="reset_password">Reset password</string>
@@ -19,8 +19,25 @@
     <string name="eatenBtn">Eaten</string>
     <string name="exit">Exit</string>
     <string name="click_back_again_to_exit">Click back again to exit app</string>
-    <string name="repeat_pass_hint">Repeat password...</string>
+    <string name="repeat_pass_hint">Repeat password…</string>
     <string name="side_menu_background_content_desc">side menu background</string>
     <string name="profile_image_desc">Profile image</string>
     <string name="product_image_desc">Product image</string>
+    <string name="username_hint">Enter username …</string>
+    <string name="age_hint">Enter age (years)</string>
+    <string name="weight_hint">Enter weight (kg)</string>
+    <string name="height_hint">Enter height (cm)</string>
+    <string name="radMan">Male</string>
+    <string name="radFem">Female</string>
+    <string name="confirm_configuration">Confirm account configuration</string>
+    <string name="back">Back</string>
+    <string name="select_image_desc">Select image</string>
+    <string name="calories_progress">0%</string>
+    <string name="carbohydrate_progress">0%</string>
+    <string name="protein_progress">0%</string>
+    <string name="fat_progress">0%</string>
+    <string name="czy_zjad_e_te_posi_ki_z_aktualnie_obserwowanej_diety">Have you eaten meals from the currently observed diet?</string>
+    <string name="eaten_meals_label">Eaten meals</string>
+    <string name="Log_in_to_add_meals">Log in to add eaten meals</string>
+    <string name="add_meal_label">Add meal</string>
 </resources>
