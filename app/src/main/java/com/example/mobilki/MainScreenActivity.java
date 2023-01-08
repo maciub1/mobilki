@@ -23,8 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -310,20 +308,22 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
             case R.id.nav_home:
                 //You are here
                 break;
-            /*case R.id.nav_diets:
-                Intent dietsIntent = new Intent(MainScreenActivity.this, DietActivity.class);
-                startActivity(dietsIntent);
-                break;
 
             case R.id.nav_products:
                 //Go to product activity
                 Intent intent = new Intent(MainScreenActivity.this, ProductActivity.class);
                 startActivity(intent);
                 break;
+            /*
             case R.id.nav_meals:
                 Intent mealsIntent = new Intent(MainScreenActivity.this, MealsActivity.class);
                 startActivity(mealsIntent);
                 break;
+            case R.id.nav_diets:
+                Intent dietsIntent = new Intent(MainScreenActivity.this, DietActivity.class);
+                startActivity(dietsIntent);
+                break;
+
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainScreenActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);

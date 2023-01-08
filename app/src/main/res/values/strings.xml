@@ -40,4 +40,27 @@
     <string name="eaten_meals_label">Eaten meals</string>
     <string name="Log_in_to_add_meals">Log in to add eaten meals</string>
     <string name="add_meal_label">Add meal</string>
+    <string name="products">products</string>
+    <string name="search">Search …</string>
+    <string name="add_product">Add product</string>
+    <string name="liked">Liked</string>
+    <string name="vegetarion">Vegetarian</string>
+    <string name="GlutenfFree">Gluten free</string>
+    <string name="disliked">disliked</string>
+    <string name="vegan">vegan</string>
+    <string name="allBtn">all</string>
+    <string name="product_name_hint">Product name …</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="gluten_free">Gluten free</string>
+    <string name="calories_hint">Calories (in 100 grams)</string>
+    <string name="carbohydrates_hint">Carbohydrates (grams)</string>
+    <string name="proteins_hint">Proteins (grams)</string>
+    <string name="fats_hint">Fats (grams)</string>
+    <string name="remove_product">Remove product</string>
+    <string name="SearchBtnDesc">Search button</string>
+    <string name="select_product_image_button_desc">Select product image button</string>
+    <string name="like_button_desc">like button</string>
+    <string name="dislike_button_desc">dislike button</string>
+    <string name="product_name">product_name</string>
+    <string name="product_calories">product_calories</string>
 </resources>

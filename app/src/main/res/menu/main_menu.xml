@@ -8,10 +8,11 @@
             android:title="@string/home"
             android:icon="@drawable/ic_home"/>
 
-        <!--<item
+        <item
             android:id="@+id/nav_products"
             android:title="@string/products"
             android:icon="@drawable/ic_apple"/>
+        <!--
 
         <item
             android:id="@+id/nav_meals"

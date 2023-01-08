@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,20 +44,16 @@ public class ResetPasswordActivity extends AppCompatActivity {
             } else {
                 mAuth.sendPasswordResetEmail(email)
 
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ResetPasswordActivity.this,
-                                            "Wysłano instrukcje do resetowania hasła na podany adres email",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(ResetPasswordActivity.this,
-                                            "Brak konta powiązanego z podanym emailem",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ResetPasswordActivity.this,
+                                        "Wysłano instrukcje do resetowania hasła na podany adres email",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ResetPasswordActivity.this,
+                                        "Brak konta powiązanego z podanym emailem",
+                                        Toast.LENGTH_SHORT).show();
                             }
-
                         });
             }
 
