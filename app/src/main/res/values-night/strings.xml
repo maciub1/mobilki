@@ -59,4 +59,9 @@
     <string name="dislike_button_desc">dislike button</string>
     <string name="product_name">product_name</string>
     <string name="product_calories">product_calories</string>
+    <string name="meals">Meals</string>
+    <string name="add_meal">Add meal</string>
+    <string name="product_meal_hint">Meal name ...</string>
+    <string name="approve_meal">Approve meal</string>
+    <string name="remove_meal">Remove meal</string>
 </resources>

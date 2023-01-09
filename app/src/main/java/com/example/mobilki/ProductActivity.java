@@ -1055,21 +1055,20 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 Intent intent = new Intent(ProductActivity.this, MainScreenActivity.class);
                 startActivity(intent);
                 break;
-            /*case R.id.nav_diets:
-                Intent dietsIntent = new Intent(ProductActivity.this, DietActivity.class);
-                startActivity(dietsIntent);
-                break;
-            case R.id.nav_followed:
-                Intent dieticianintent = new Intent(ProductActivity.this, DieticiansActivity.class);
-                startActivity(dieticianintent);
-                break;
-            case R.id.nav_products:
-                //You are here
-                break;
+
             case R.id.nav_meals:
                 Intent mealsIntent = new Intent(ProductActivity.this, MealsActivity.class);
                 startActivity(mealsIntent);
                 break;
+            /*case R.id.nav_diets:
+                Intent dietsIntent = new Intent(ProductActivity.this, DietActivity.class);
+                startActivity(dietsIntent);
+                break;
+
+            case R.id.nav_products:
+                //You are here
+                break;
+
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(ProductActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
