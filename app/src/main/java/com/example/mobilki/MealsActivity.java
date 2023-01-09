@@ -57,7 +57,7 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meals);
 
-        mAddBtn = (Button) findViewById(R.id.addMealBtn);
+        mAddBtn = findViewById(R.id.addMealBtn);
         mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,15 +73,15 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
         header = navigationView.getHeaderView(0);
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
-        mSearchField = (EditText) findViewById(R.id.mealSearchField);
-        mSearchBtn = (ImageButton) findViewById(R.id.mealSearchBtn);
-        mMealList = (RecyclerView) findViewById(R.id.meal_list);
+        mSearchField = findViewById(R.id.mealSearchField);
+        mSearchBtn = findViewById(R.id.mealSearchBtn);
+        mMealList = findViewById(R.id.meal_list);
         mMealList.setHasFixedSize(true);
         mMealList.setLayoutManager(new LinearLayoutManager(this));
-        mVegetarianBtn = (Button) findViewById(R.id.vegetarianB);
-        mGlutenFreeBtn = (Button) findViewById(R.id.glutenFreeB);
-        mVeganBtn = (Button) findViewById(R.id.veganB);
-        mAllBtn = (Button) findViewById(R.id.allB);
+        mVegetarianBtn = findViewById(R.id.vegetarianB);
+        mGlutenFreeBtn = findViewById(R.id.glutenFreeB);
+        mVeganBtn = findViewById(R.id.veganB);
+        mAllBtn = findViewById(R.id.allB);
         mVegetarianBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -396,22 +396,22 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            mLikeBtn = (ImageButton) mView.findViewById(R.id.likeBtn);
-            mDislikeBtn = (ImageButton) mView.findViewById(R.id.dislikeBtn);
+            mLikeBtn = mView.findViewById(R.id.likeBtn);
+            mDislikeBtn = mView.findViewById(R.id.dislikeBtn);
             mLikeBtn.setVisibility(View.GONE);
             mDislikeBtn.setVisibility(View.GONE);
 
         }
         public void setName(String name){
-            TextView product_name = (TextView) mView.findViewById(R.id.product_name);
+            TextView product_name = mView.findViewById(R.id.product_name);
             product_name.setText(name);
         }
         public void setCalories(String calories){
-            TextView product_calories = (TextView) mView.findViewById(R.id.product_calories);
+            TextView product_calories = mView.findViewById(R.id.product_calories);
             product_calories.setText(calories+"kcal");
         }
         public void setImage(String image){
-            ImageView product_image = (ImageView) mView.findViewById(R.id.product_image);
+            ImageView product_image = mView.findViewById(R.id.product_image);
             Picasso.get().load(image).into(product_image);
         }
     }

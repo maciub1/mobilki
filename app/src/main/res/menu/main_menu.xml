@@ -19,19 +19,14 @@
             android:icon="@drawable/ic_meals"
             android:title="@string/meals" />
 
-        <!--
+
 
         <item
             android:id="@+id/nav_diets"
             android:title="@string/diets"
             android:icon="@drawable/ic_diets"/>
 
-        <item
-            android:id="@+id/nav_followed"
-            android:title="@string/followed"
-            android:icon="@drawable/ic_users"/>
-
-
+        <!--
         <item
             android:id="@+id/nav_settings"
             android:title="@string/settings"

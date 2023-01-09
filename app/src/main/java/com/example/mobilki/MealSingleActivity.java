@@ -158,12 +158,12 @@ public class MealSingleActivity extends AppCompatActivity {
 
 
         public void setName(String name){
-            TextView product_name = (TextView) mView.findViewById(R.id.productName);
+            TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
         public void setImage(String image){
-            ImageView product_image = (ImageView) mView.findViewById(R.id.productImage);
+            ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
 

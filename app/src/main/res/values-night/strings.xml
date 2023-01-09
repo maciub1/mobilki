@@ -64,4 +64,26 @@
     <string name="product_meal_hint">Meal name ...</string>
     <string name="approve_meal">Approve meal</string>
     <string name="remove_meal">Remove meal</string>
+    <string name="meal_weight_hint">Weight (grams)</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="diets">Diets</string>
+    <string name="add_diet">Add diet</string>
+    <string name="name_diet_hint">Diet name ...</string>
+    <string name="Diet_desc">Diet description ...</string>
+    <string name="Meal_list_hint">Aded meals will show up here</string>
+    <string name="calories_0">Calories: 0</string>
+    <string name="carbohydrates_0">Carbohydrates: 0</string>
+    <string name="proteins_0">Proteins: 0</string>
+    <string name="fat_0">Fat: 0</string>
+    <string name="add_another_day">Add another day</string>
+    <string name="save_diet">Save diet</string>
+    <string name="diet_desc">Diet description</string>
+    <string name="meals_first_day">Meals in day: 1</string>
+    <string name="previous_day">Previous day</string>
+    <string name="next_day">Next day</string>
+    <string name="write_comment">Write comment ...</string>
+    <string name="add_rating">Add rating</string>
+    <string name="observe_diet">Observe diet</string>
+    <string name="diet_remove">Remove diet</string>
 </resources>

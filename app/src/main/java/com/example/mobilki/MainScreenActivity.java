@@ -319,12 +319,12 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 Intent mealsIntent = new Intent(MainScreenActivity.this, MealsActivity.class);
                 startActivity(mealsIntent);
                 break;
-            /*case R.id.nav_diets:
+            case R.id.nav_diets:
                 Intent dietsIntent = new Intent(MainScreenActivity.this, DietActivity.class);
                 startActivity(dietsIntent);
                 break;
 
-            case R.id.nav_settings:
+            /*case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainScreenActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;*/

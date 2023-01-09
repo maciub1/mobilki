@@ -54,17 +54,17 @@ public class ProductSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_select);
 
-        mSearchField = (EditText) findViewById(R.id.productSearch);
-        mSearchBtn = (ImageButton) findViewById(R.id.productSearchBt);
-        mProductList = (RecyclerView) findViewById(R.id.productList);
+        mSearchField = findViewById(R.id.productSearch);
+        mSearchBtn = findViewById(R.id.productSearchBt);
+        mProductList = findViewById(R.id.productList);
         mProductList.setHasFixedSize(true);
         mProductList.setLayoutManager(new LinearLayoutManager(this));
-        mLikesBtn = (Button) findViewById(R.id.likesBt);
-        mDislikesBtn = (Button) findViewById(R.id.dislikesBt);
-        mVegetarianBtn = (Button) findViewById(R.id.vegetarianBt);
-        mGlutenFreeBtn = (Button) findViewById(R.id.glutenFreeBt);
-        mVeganBtn = (Button) findViewById(R.id.veganBt);
-        mAllBtn = (Button) findViewById(R.id.allBt);
+        mLikesBtn = findViewById(R.id.likesBt);
+        mDislikesBtn = findViewById(R.id.dislikesBt);
+        mVegetarianBtn = findViewById(R.id.vegetarianBt);
+        mGlutenFreeBtn = findViewById(R.id.glutenFreeBt);
+        mVeganBtn = findViewById(R.id.veganBt);
+        mAllBtn = findViewById(R.id.allBt);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -355,12 +355,12 @@ public class ProductSelectActivity extends AppCompatActivity {
 
 
         public void setName(String name){
-            TextView product_name = (TextView) mView.findViewById(R.id.productName);
+            TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
         public void setImage(String image){
-            ImageView product_image = (ImageView) mView.findViewById(R.id.productImage);
+            ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
 
@@ -368,9 +368,9 @@ public class ProductSelectActivity extends AppCompatActivity {
     public void createNewGramsDialog(Intent returnIntent, String product_key){
         dialogBuilder = new AlertDialog.Builder(this);
         final View gramsPopupView = getLayoutInflater().inflate(R.layout.popup,null);
-        gramsField = (EditText) gramsPopupView.findViewById(R.id.gramsField);
-        saveBtn = (Button) gramsPopupView.findViewById(R.id.saveBtn);
-        cancelBtn = (Button) gramsPopupView.findViewById(R.id.cancelBtn);
+        gramsField = gramsPopupView.findViewById(R.id.gramsField);
+        saveBtn = gramsPopupView.findViewById(R.id.saveBtn);
+        cancelBtn = gramsPopupView.findViewById(R.id.cancelBtn);
         dialogBuilder.setView(gramsPopupView);
         dialog=dialogBuilder.create();
         dialog.show();

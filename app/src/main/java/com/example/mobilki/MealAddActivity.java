@@ -62,15 +62,15 @@ public class MealAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_add);
 
-        mMealSelectImage = (ImageButton) findViewById(R.id.mealImageSelectBtn);
-        mMealName = (EditText) findViewById(R.id.MealName);
+        mMealSelectImage = findViewById(R.id.mealImageSelectBtn);
+        mMealName = findViewById(R.id.MealName);
         mStorageImage = FirebaseStorage.getInstance().getReference().child("Meal_images");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
         mDatabaseUsers= FirebaseDatabase.getInstance().getReference().child("Users");
         mProgress = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
-        mAddProductToMealBtn = (Button) findViewById(R.id.AddProductToMealBtn);
-        mAcceptBtn = (Button) findViewById(R.id.acceptBtn);
+        mAddProductToMealBtn = findViewById(R.id.AddProductToMealBtn);
+        mAcceptBtn = findViewById(R.id.acceptBtn);
         mMealSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
