@@ -15,4 +15,24 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="CircularCaloriesProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/calories_circle</item>
+    </style>
+
+    <style name="CircularCarbohydratesProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/carbohydrates_circle</item>
+    </style>
+
+    <style name="CircularProteinsProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/proteins_circle</item>
+    </style>
+
+    <style name="CircularFatsProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/fats_circle</item>
+    </style>
 </resources>

@@ -244,13 +244,13 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 }
             });
         }
-        /*mAddMealToEatenBtn.setOnClickListener(new View.OnClickListener() {
+        mAddMealToEatenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent ProductSelectIntent = new Intent(MainScreenActivity.this, MealSelectActivity.class);
                 startActivityForResult(ProductSelectIntent, MEAL_REQUEST);
             }
-        });*/
+        });
 
 
     }
