@@ -22,11 +22,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,7 +46,6 @@ public class DietAddActivity extends AppCompatActivity {
     private StorageReference mStorageImage;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseDiets;
-    private DatabaseReference mDatabaseUsers;
     private DatabaseReference mMeals;
     private ProgressDialog mProgress;
     private  double mCalories=0;
@@ -60,7 +56,7 @@ public class DietAddActivity extends AppCompatActivity {
     private  boolean mVegan=true;
     private  boolean mVegetarian=true;
     private int day=1;
-    List<String> meals_ids = new ArrayList<String>();
+    final List<String> meals_ids = new ArrayList<>();
     private Button mAcceptBtn;
     private String mMealsStr;
 
@@ -76,7 +72,7 @@ public class DietAddActivity extends AppCompatActivity {
         mDietName = findViewById(R.id.DietName);
         mStorageImage = FirebaseStorage.getInstance().getReference().child("Diet_images");
         mDatabaseDiets = FirebaseDatabase.getInstance().getReference().child("Diets");
-        mDatabaseUsers= FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mProgress = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         mAddMealToDietBtn = findViewById(R.id.AddMealToDietBtn);
@@ -89,34 +85,17 @@ public class DietAddActivity extends AppCompatActivity {
         mCarbohydratesField = findViewById(R.id.carbohydratesField);
         mMealsStr="";
         mAddedMealsField = findViewById(R.id.AddedMeals);
-        mDietSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_REQUEST);
-            }
+        mDietSelectImage.setOnClickListener(view -> {
+            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent,GALLERY_REQUEST);
         });
-        mAddMealToDietBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ProductSelectIntent = new Intent(DietAddActivity.this,MealSelectActivity.class);
-                startActivityForResult(ProductSelectIntent,MEAL_REQUEST);
-            }
-
+        mAddMealToDietBtn.setOnClickListener(v -> {
+            Intent ProductSelectIntent = new Intent(DietAddActivity.this,MealSelectActivity.class);
+            startActivityForResult(ProductSelectIntent,MEAL_REQUEST);
         });
-        mAcceptBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addDiet();
-            }
-        });
-        mNextDayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMeals=addDay(mMeals);
-            }
-        });
+        mAcceptBtn.setOnClickListener(v -> addDiet());
+        mNextDayBtn.setOnClickListener(v -> mMeals=addDay(mMeals));
     }
 
     private void addDiet() {
@@ -132,64 +111,47 @@ public class DietAddActivity extends AppCompatActivity {
 
                 StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
                 final UploadTask uploadTask = filepath.putFile(mImageUri);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                            @Override
-                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                if (!task.isSuccessful()) {
-                                    throw task.getException();
-
-                                }
-                                // Continue with the task to get the download URL
-                                return filepath.getDownloadUrl();
-
-                            }
-                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    String downloadUri = task.getResult().toString();
-                                    DatabaseReference newDiet = mDatabaseDiets.push();
-
-                                    newDiet.child("name").setValue(name_val);
-                                    newDiet.child("desc").setValue(desc_val);
-                                    newDiet.child("rating").setValue("0");
-                                    newDiet.child("image").setValue(downloadUri);
-                                    newDiet.child("uid").setValue(mAuth.getCurrentUser().getUid());
-                                    newDiet.child("tags").child("vegetarian").setValue("1");
-                                    newDiet.child("tags").child("vegan").setValue("1");
-                                    newDiet.child("tags").child("gluten free").setValue("1");
-                                    if(!mVegetarian)
-                                        newDiet.child("tags").child("vegetarian").setValue("0");
-                                    if(!mVegan)
-                                        newDiet.child("tags").child("vegan").setValue("0");
-                                    if(!mGlutenFree)
-                                        newDiet.child("tags").child("gluten free").setValue("0");
-                                    for(String id : meals_ids){
-                                        newDiet.child("Meals").child(Integer.toString(day)).child(id).setValue("meal id");
-                                    }
-
-
-
-                                    mProgress.dismiss();
-                                    Intent mealIntent = new Intent(DietAddActivity.this, DietActivity.class);
-                                    mealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(mealIntent);
-
-
-                                }
-                            }
-                        });
+                uploadTask.addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
 
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                    // Continue with the task to get the download URL
+                    return filepath.getDownloadUrl();
+
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String downloadUri = task.getResult().toString();
+                        DatabaseReference newDiet = mDatabaseDiets.push();
+
+                        newDiet.child("name").setValue(name_val);
+                        newDiet.child("desc").setValue(desc_val);
+                        newDiet.child("rating").setValue("0");
+                        newDiet.child("image").setValue(downloadUri);
+                        newDiet.child("uid").setValue(mAuth.getCurrentUser().getUid());
+                        newDiet.child("tags").child("vegetarian").setValue("1");
+                        newDiet.child("tags").child("vegan").setValue("1");
+                        newDiet.child("tags").child("gluten free").setValue("1");
+                        if (!mVegetarian)
+                            newDiet.child("tags").child("vegetarian").setValue("0");
+                        if (!mVegan)
+                            newDiet.child("tags").child("vegan").setValue("0");
+                        if (!mGlutenFree)
+                            newDiet.child("tags").child("gluten free").setValue("0");
+                        for (String id : meals_ids) {
+                            newDiet.child("Meals").child(Integer.toString(day)).child(id).setValue("meal id");
+                        }
+
+
+                        mProgress.dismiss();
+                        Intent mealIntent = new Intent(DietAddActivity.this, DietActivity.class);
+                        mealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(mealIntent);
+
+
                     }
-                });
+                })).addOnFailureListener(e -> {
+                    });
             } else{
                 mProgress.dismiss();
                 Toast.makeText(DietAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();}
@@ -212,58 +174,42 @@ public class DietAddActivity extends AppCompatActivity {
                 DatabaseReference newDiet = mDatabaseDiets.push();
                 StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
                 final UploadTask uploadTask = filepath.putFile(mImageUri);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                            @Override
-                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                if (!task.isSuccessful()) {
-                                    throw task.getException();
-
-                                }
-                                // Continue with the task to get the download URL
-                                return filepath.getDownloadUrl();
-
-                            }
-                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    String downloadUri = task.getResult().toString();
-
-                                    newDiet.child("name").setValue(name_val);
-                                    newDiet.child("rating").setValue("0");
-                                    newDiet.child("desc").setValue(desc_val);
-                                    newDiet.child("image").setValue(downloadUri);
-                                    newDiet.child("uid").setValue(mAuth.getCurrentUser().getUid());
-                                    newDiet.child("tags").child("vegetarian").setValue("1");
-                                    newDiet.child("tags").child("vegan").setValue("1");
-                                    newDiet.child("tags").child("gluten free").setValue("1");
-                                    if (!mVegetarian)
-                                        newDiet.child("tags").child("vegetarian").setValue("0");
-                                    if (!mVegan)
-                                        newDiet.child("tags").child("vegan").setValue("0");
-                                    if (!mGlutenFree)
-                                        newDiet.child("tags").child("gluten free").setValue("0");
-                                    for (String id : meals_ids) {
-                                        newDiet.child("Meals").child(Integer.toString(day)).child(id).setValue("meal id");
-                                    }
-
-                                    clean();
-                                    day++;
-                                    mProgress.dismiss();
-                                }
-                            }
-                        });
+                uploadTask.addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
 
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                    // Continue with the task to get the download URL
+                    return filepath.getDownloadUrl();
+
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String downloadUri = task.getResult().toString();
+
+                        newDiet.child("name").setValue(name_val);
+                        newDiet.child("rating").setValue("0");
+                        newDiet.child("desc").setValue(desc_val);
+                        newDiet.child("image").setValue(downloadUri);
+                        newDiet.child("uid").setValue(mAuth.getCurrentUser().getUid());
+                        newDiet.child("tags").child("vegetarian").setValue("1");
+                        newDiet.child("tags").child("vegan").setValue("1");
+                        newDiet.child("tags").child("gluten free").setValue("1");
+                        if (!mVegetarian)
+                            newDiet.child("tags").child("vegetarian").setValue("0");
+                        if (!mVegan)
+                            newDiet.child("tags").child("vegan").setValue("0");
+                        if (!mGlutenFree)
+                            newDiet.child("tags").child("gluten free").setValue("0");
+                        for (String id : meals_ids) {
+                            newDiet.child("Meals").child(Integer.toString(day)).child(id).setValue("meal id");
+                        }
+
+                        clean();
+                        day++;
+                        mProgress.dismiss();
                     }
-                });
+                })).addOnFailureListener(e -> {
+                    });
                 return newDiet.child("Meals");
             } else{
                 mProgress.dismiss();

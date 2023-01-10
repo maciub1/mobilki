@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -88,12 +87,9 @@ public class DietSingleActivity extends AppCompatActivity {
         mAddComment = findViewById(R.id.commentAdd);
         mAddRatingBar = findViewById(R.id.addRatingBar);
         mRatingBar = findViewById(R.id.RatingBar);
-        mAddRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mAddComment.setVisibility(View.VISIBLE);
-                mAddRatingBtn.setVisibility(View.VISIBLE);
-            }
+        mAddRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            mAddComment.setVisibility(View.VISIBLE);
+            mAddRatingBtn.setVisibility(View.VISIBLE);
         });
         mDatabaseDiets.child(mDietKey).addValueEventListener(new ValueEventListener() {
             @Override
@@ -148,127 +144,98 @@ public class DietSingleActivity extends AppCompatActivity {
             }
         });
 
-        mDietRemoveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabaseMeals.child(mDietKey).removeValue();
-                Intent DietsIntent = new Intent(DietSingleActivity.this, DietActivity.class);
-                startActivity(DietsIntent);
-            }
+        mDietRemoveBtn.setOnClickListener(v -> {
+            mDatabaseMeals.child(mDietKey).removeValue();
+            Intent DietsIntent = new Intent(DietSingleActivity.this, DietActivity.class);
+            startActivity(DietsIntent);
         });
 
 
-        mObserveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("observed diet").setValue(mDietKey);
-                mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("day").setValue("1");
-            }
+        mObserveBtn.setOnClickListener(v -> {
+            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("observed diet").setValue(mDietKey);
+            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).child("day").setValue("1");
         });
 
-        mNextDayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                day++;
-                mPreviousDayBtn.setVisibility(View.VISIBLE);
-                mDayField.setText("Meals in day: "+Long.toString(day)+":");
-                if(day==numberOfDays)
-                    mNextDayBtn.setVisibility(View.INVISIBLE);
-                FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
-                        Meal.class,
-                        R.layout.product_select_row,
-                        MealViewHolder.class,
-                        mDatabaseMeals
-                ) {
-                    @Override
-                    protected void populateViewHolder(MealViewHolder mealViewHolder, Meal meal, int i) {
-                        String meal_key = getRef(i).getKey();
-                        mealViewHolder.setName(meal.getName());
-                        mealViewHolder.setImage(meal.getImage());
-                        mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if(!task.getResult().hasChild(meal_key))
-                                {
-                                    mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
-                                    layoutParams.setMargins(0, 0, 0, 0);
-                                    mealViewHolder.mView.setLayoutParams(layoutParams);
-                                }
-                            }
-                        });
-                    }
-                };
-                mMealsList.setAdapter(firebaseRecyclerAdapter);
-            }
+        mNextDayBtn.setOnClickListener(v -> {
+            day++;
+            mPreviousDayBtn.setVisibility(View.VISIBLE);
+            mDayField.setText("Meals in day: "+ day +":");
+            if(day==numberOfDays)
+                mNextDayBtn.setVisibility(View.INVISIBLE);
+            FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
+                    Meal.class,
+                    R.layout.product_select_row,
+                    MealViewHolder.class,
+                    mDatabaseMeals
+            ) {
+                @Override
+                protected void populateViewHolder(MealViewHolder mealViewHolder, Meal meal, int i) {
+                    String meal_key = getRef(i).getKey();
+                    mealViewHolder.setName(meal.getName());
+                    mealViewHolder.setImage(meal.getImage());
+                    mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(task -> {
+                        if (!task.getResult().hasChild(meal_key)) {
+                            mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
+                            layoutParams.setMargins(0, 0, 0, 0);
+                            mealViewHolder.mView.setLayoutParams(layoutParams);
+                        }
+                    });
+                }
+            };
+            mMealsList.setAdapter(firebaseRecyclerAdapter);
         });
 
-        mPreviousDayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                day--;
-                mNextDayBtn.setVisibility(View.VISIBLE);
-                mDayField.setText("Meals in day: "+Long.toString(day)+":");
-                if(day==1)
-                    mPreviousDayBtn.setVisibility(View.INVISIBLE);
-                FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
-                        Meal.class,
-                        R.layout.product_select_row,
-                        MealViewHolder.class,
-                        mDatabaseMeals
-                ) {
-                    @Override
-                    protected void populateViewHolder(MealViewHolder mealViewHolder, Meal meal, int i) {
-                        String meal_key = getRef(i).getKey();
-                        mealViewHolder.setName(meal.getName());
-                        mealViewHolder.setImage(meal.getImage());
-                        mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if(!task.getResult().hasChild(meal_key))
-                                {
-                                    mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
-                                    layoutParams.setMargins(0, 0, 0, 0);
-                                    mealViewHolder.mView.setLayoutParams(layoutParams);
-                                }
-                            }
-                        });
-                    }
-                };
-                mMealsList.setAdapter(firebaseRecyclerAdapter);
-            }
+        mPreviousDayBtn.setOnClickListener(v -> {
+            day--;
+            mNextDayBtn.setVisibility(View.VISIBLE);
+            mDayField.setText("Meals in day: "+ day +":");
+            if(day==1)
+                mPreviousDayBtn.setVisibility(View.INVISIBLE);
+            FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
+                    Meal.class,
+                    R.layout.product_select_row,
+                    MealViewHolder.class,
+                    mDatabaseMeals
+            ) {
+                @Override
+                protected void populateViewHolder(MealViewHolder mealViewHolder, Meal meal, int i) {
+                    String meal_key = getRef(i).getKey();
+                    mealViewHolder.setName(meal.getName());
+                    mealViewHolder.setImage(meal.getImage());
+                    mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(task -> {
+                        if (!task.getResult().hasChild(meal_key)) {
+                            mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
+                            layoutParams.setMargins(0, 0, 0, 0);
+                            mealViewHolder.mView.setLayoutParams(layoutParams);
+                        }
+                    });
+                }
+            };
+            mMealsList.setAdapter(firebaseRecyclerAdapter);
         });
 
-        mAddRatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ratings=0;
-                mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("rating").setValue(Integer.toString((int)mAddRatingBar.getRating()));
-                mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("name").setValue(task.getResult().child("name").getValue().toString());
-                        mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("image").setValue(task.getResult().child("image").getValue().toString());
-                    }
-                });
-                if(!TextUtils.isEmpty(mAddComment.getText().toString()))
-                    mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("comment").setValue(mAddComment.getText().toString());
-                mDatabaseDiets.child(mDietKey).child("Ratings").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        for(DataSnapshot rating : task.getResult().getChildren())
-                            ratings += Double.parseDouble(rating.child("rating").getValue().toString());
-                        mDatabaseDiets.child(mDietKey).child("rating").setValue(Long.toString(Math.round(ratings/task.getResult().getChildrenCount())));
-                    }
-                });
+        mAddRatingBtn.setOnClickListener(v -> {
+            ratings=0;
+            mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("rating").setValue(Integer.toString((int)mAddRatingBar.getRating()));
+            mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
+                mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("name").setValue(task.getResult().child("name").getValue().toString());
+                mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("image").setValue(task.getResult().child("image").getValue().toString());
+            });
+            if(!TextUtils.isEmpty(mAddComment.getText().toString()))
+                mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("comment").setValue(mAddComment.getText().toString());
+            mDatabaseDiets.child(mDietKey).child("Ratings").get().addOnCompleteListener(task -> {
+                for (DataSnapshot rating : task.getResult().getChildren())
+                    ratings += Double.parseDouble(rating.child("rating").getValue().toString());
+                mDatabaseDiets.child(mDietKey).child("rating").setValue(Long.toString(Math.round(ratings / task.getResult().getChildrenCount())));
+            });
 
 
-                mAddRatingBtn.setVisibility(View.GONE);
-                mAddComment.setVisibility(View.GONE);
-                mAddRatingBar.setVisibility(View.GONE);
+            mAddRatingBtn.setVisibility(View.GONE);
+            mAddComment.setVisibility(View.GONE);
+            mAddRatingBar.setVisibility(View.GONE);
 
-            }
         });
     }
 
@@ -286,16 +253,13 @@ public class DietSingleActivity extends AppCompatActivity {
                 String meal_key = getRef(i).getKey();
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setImage(meal.getImage());
-                mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(!task.getResult().hasChild(meal_key))
-                        {
-                            mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            mealViewHolder.mView.setLayoutParams(layoutParams);
-                        }
+                mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(task -> {
+                    if(!task.getResult().hasChild(meal_key))
+                    {
+                        mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        mealViewHolder.mView.setLayoutParams(layoutParams);
                     }
                 });
             }
@@ -303,7 +267,7 @@ public class DietSingleActivity extends AppCompatActivity {
         mMealsList.setAdapter(firebaseRecyclerAdapter);
     }
     public static class MealViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+        final View mView;
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
@@ -321,7 +285,7 @@ public class DietSingleActivity extends AppCompatActivity {
     }
 
     public static class RatingViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+        final View mView;
         public RatingViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;

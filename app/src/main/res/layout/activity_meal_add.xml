@@ -22,7 +22,8 @@
             android:adjustViewBounds="true"
             android:maxHeight="200dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            android:contentDescription="@string/select_meal_image_button" />
 
         <EditText
             android:id="@+id/MealName"
@@ -37,7 +38,7 @@
             android:minHeight="48dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            />
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/AddProductToMealBtn"

@@ -34,17 +34,9 @@ import com.squareup.picasso.Picasso;
 
 public class DietActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private Button mAddBtn;
     private FirebaseAuth mAuth;
     private RecyclerView mDietList;
     private EditText mSearchField;
-    private ImageButton mSearchBtn;
-    private Button mLikesBtn;
-    private Button mDieticianBtn;
-    private Button mVegetarianBtn;
-    private Button mGlutenFreeBtn;
-    private Button mVeganBtn;
-    private Button mAllBtn;
     private ProgressDialog mProgress;
 
     DrawerLayout drawerLayout;
@@ -57,85 +49,53 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseReference mDatabaseProducts;
     private TextView usernameTv;
     private ImageView userImg;
-    private Button guestLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet);
 
-        mAddBtn = findViewById(R.id.addDietBtn);
+        Button mAddBtn = findViewById(R.id.addDietBtn);
         mAuth = FirebaseAuth.getInstance();
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseDiets = FirebaseDatabase.getInstance().getReference().child("Diets");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
         mDatabaseProducts = FirebaseDatabase.getInstance().getReference().child("Products");
         mSearchField = findViewById(R.id.DietSearchField);
-        mSearchBtn = findViewById(R.id.DietSearchBtn);
+        ImageButton mSearchBtn = findViewById(R.id.DietSearchBtn);
         mDietList = findViewById(R.id.diet_list);
         mProgress = new ProgressDialog(this);
         mDietList.setHasFixedSize(true);
         mDietList.setLayoutManager(new LinearLayoutManager(this));
-        mLikesBtn = findViewById(R.id.likesDietBtn);
-        mVegetarianBtn = findViewById(R.id.vegetarianDietBtn);
-        mGlutenFreeBtn = findViewById(R.id.glutenFreeDietBtn);
-        mVeganBtn = findViewById(R.id.veganDietBtn);
-        mAllBtn = findViewById(R.id.allDietBtn);
+        Button mLikesBtn = findViewById(R.id.likesDietBtn);
+        Button mVegetarianBtn = findViewById(R.id.vegetarianDietBtn);
+        Button mGlutenFreeBtn = findViewById(R.id.glutenFreeDietBtn);
+        Button mVeganBtn = findViewById(R.id.veganDietBtn);
+        Button mAllBtn = findViewById(R.id.allDietBtn);
         if(mAuth.getCurrentUser().isAnonymous())
         {
             mAddBtn.setVisibility(View.GONE);
             mLikesBtn.setVisibility(View.GONE);
         }
-        mAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent AddDietIntent=new Intent(DietActivity.this,
-                        DietAddActivity.class);
-                startActivity(AddDietIntent);
-            }
+        mAddBtn.setOnClickListener(view -> {
+            Intent AddDietIntent=new Intent(DietActivity.this,
+                    DietAddActivity.class);
+            startActivity(AddDietIntent);
         });
 
-        mSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = mSearchField.getText().toString();
-                dietSearch(searchText);
-            }
+        mSearchBtn.setOnClickListener(v -> {
+            String searchText = mSearchField.getText().toString();
+            dietSearch(searchText);
         });
 
-        mVegetarianBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegetarian();
-            }
-        });
+        mVegetarianBtn.setOnClickListener(v -> showVegetarian());
 
-        mVeganBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegan();
-            }
-        });
+        mVeganBtn.setOnClickListener(v -> showVegan());
 
-        mGlutenFreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGlutenFree();
-            }
-        });
+        mGlutenFreeBtn.setOnClickListener(v -> showGlutenFree());
 
-        mAllBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStart();
-            }
-        });
-        mLikesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLikes();
-            }
-        });
+        mAllBtn.setOnClickListener(v -> onStart());
+        mLikesBtn.setOnClickListener(v -> showLikes());
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -144,7 +104,7 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
 
         usernameTv = header.findViewById(R.id.usernameTv);
         userImg = header.findViewById(R.id.profile_img);
-        guestLogin = header.findViewById(R.id.guest_log_in);
+        Button guestLogin = header.findViewById(R.id.guest_log_in);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -165,12 +125,9 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
             userImg.setImageResource(0);
             guestLogin.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_logout).setTitle(R.string.exit);
-            guestLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(DietActivity.this, MainActivity.class));
-                }
+            guestLogin.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(DietActivity.this, MainActivity.class));
             });
         }
     }
@@ -191,13 +148,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
                 mDatabaseDiets.child(diet_key).child("Meals").addValueEventListener(new ValueEventListener() {
                     @Override
@@ -271,13 +225,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
 
             }
@@ -299,13 +250,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
 
             }
@@ -327,13 +275,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
 
             }
@@ -355,13 +300,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
 
             }
@@ -384,13 +326,10 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setName(diet.getName());
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
-                dietViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                        singleDietIntent.putExtra("diet_id",diet_key);
-                        startActivity(singleDietIntent);
-                    }
+                dietViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id",diet_key);
+                    startActivity(singleDietIntent);
                 });
 
             }
@@ -399,8 +338,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
 
     }
     public static class DietViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-        FirebaseAuth mAuth;
+        final View mView;
+        final FirebaseAuth mAuth;
 
         public DietViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -464,7 +403,7 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId())
         {
             case R.id.nav_home:
-                //Go to main screen
+
                 Intent intent = new Intent(DietActivity.this, MainScreenActivity.class);
                 startActivity(intent);
                 break;
@@ -478,13 +417,12 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 Intent mealsIntent = new Intent(DietActivity.this, MealsActivity.class);
                 startActivity(mealsIntent);
                 break;
-            //case R.id.nav_settings:
-                //Intent settingsIntent = new Intent(DietActivity.this, SettingsActivity.class);
-                //startActivity(settingsIntent);
-                //break;
+            case R.id.nav_settings:
+                Intent settingsIntent = new Intent(DietActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
             case R.id.nav_logout:
                 //Log out user
-                //...
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(DietActivity.this, MainActivity.class));
         }

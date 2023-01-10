@@ -40,31 +40,21 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
 
     private TextView usernameTv;
     private ImageView userImg;
-    private Button guestLogin;
     private DatabaseReference mDatabaseUsers;
     private DatabaseReference mDatabaseMeals;
-    private Button mAddBtn;
     private RecyclerView mMealList;
     private EditText mSearchField;
-    private ImageButton mSearchBtn;
-    private Button mVegetarianBtn;
-    private Button mGlutenFreeBtn;
-    private Button mVeganBtn;
-    private Button mAllBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meals);
 
-        mAddBtn = findViewById(R.id.addMealBtn);
-        mAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent AddMealIntent=new Intent(MealsActivity.this,
-                        MealAddActivity.class);
-                startActivity(AddMealIntent);
-            }
+        Button mAddBtn = findViewById(R.id.addMealBtn);
+        mAddBtn.setOnClickListener(view -> {
+            Intent AddMealIntent=new Intent(MealsActivity.this,
+                    MealAddActivity.class);
+            startActivity(AddMealIntent);
         });
         mAuth = FirebaseAuth.getInstance();
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -74,53 +64,30 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
         mSearchField = findViewById(R.id.mealSearchField);
-        mSearchBtn = findViewById(R.id.mealSearchBtn);
+        ImageButton mSearchBtn = findViewById(R.id.mealSearchBtn);
         mMealList = findViewById(R.id.meal_list);
         mMealList.setHasFixedSize(true);
         mMealList.setLayoutManager(new LinearLayoutManager(this));
-        mVegetarianBtn = findViewById(R.id.vegetarianB);
-        mGlutenFreeBtn = findViewById(R.id.glutenFreeB);
-        mVeganBtn = findViewById(R.id.veganB);
-        mAllBtn = findViewById(R.id.allB);
-        mVegetarianBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegetarian();
-            }
-        });
+        Button mVegetarianBtn = findViewById(R.id.vegetarianB);
+        Button mGlutenFreeBtn = findViewById(R.id.glutenFreeB);
+        Button mVeganBtn = findViewById(R.id.veganB);
+        Button mAllBtn = findViewById(R.id.allB);
+        mVegetarianBtn.setOnClickListener(v -> showVegetarian());
 
-        mVeganBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegan();
-            }
-        });
+        mVeganBtn.setOnClickListener(v -> showVegan());
 
-        mGlutenFreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGlutenFree();
-            }
-        });
+        mGlutenFreeBtn.setOnClickListener(v -> showGlutenFree());
 
-        mAllBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStart();
-            }
-        });
+        mAllBtn.setOnClickListener(v -> onStart());
 
-        mSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = mSearchField.getText().toString();
-                mealSearch(searchText);
-            }
+        mSearchBtn.setOnClickListener(v -> {
+            String searchText = mSearchField.getText().toString();
+            mealSearch(searchText);
         });
 
         usernameTv = header.findViewById(R.id.usernameTv);
         userImg = header.findViewById(R.id.profile_img);
-        guestLogin = header.findViewById(R.id.guest_log_in);
+        Button guestLogin = header.findViewById(R.id.guest_log_in);
         if(mAuth.getCurrentUser().isAnonymous())
         {
             mAddBtn.setVisibility(View.GONE);
@@ -146,12 +113,9 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
             userImg.setImageResource(0);
             guestLogin.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_logout).setTitle(R.string.exit);
-            guestLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(MealsActivity.this, MainActivity.class));
-                }
+            guestLogin.setOnClickListener(v -> {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MealsActivity.this, MainActivity.class));
             });
         }
     }
@@ -170,14 +134,11 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
-                        singleMealIntent.putExtra("meal_id",meal_key);
-                        startActivity(singleMealIntent);
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
+                    singleMealIntent.putExtra("meal_id",meal_key);
+                    startActivity(singleMealIntent);
 
-                    }
                 });
 
 
@@ -201,14 +162,11 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
-                        singleMealIntent.putExtra("meal_id",meal_key);
-                        startActivity(singleMealIntent);
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
+                    singleMealIntent.putExtra("meal_id",meal_key);
+                    startActivity(singleMealIntent);
 
-                    }
                 });
 
             }
@@ -230,14 +188,11 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
-                        singleMealIntent.putExtra("meal_id",meal_key);
-                        startActivity(singleMealIntent);
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
+                    singleMealIntent.putExtra("meal_id",meal_key);
+                    startActivity(singleMealIntent);
 
-                    }
                 });
 
             }
@@ -259,14 +214,11 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
-                        singleMealIntent.putExtra("meal_id",meal_key);
-                        startActivity(singleMealIntent);
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
+                    singleMealIntent.putExtra("meal_id",meal_key);
+                    startActivity(singleMealIntent);
 
-                    }
                 });
 
 
@@ -326,7 +278,7 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_meals:
                 break;
 
-            /*case R.id.nav_diets:
+            case R.id.nav_diets:
                 Intent dietsIntent = new Intent(MealsActivity.this, DietActivity.class);
                 startActivity(dietsIntent);
                 break;
@@ -335,7 +287,7 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MealsActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                break;*/
+                break;
             case R.id.nav_logout:
                 //Log out user
                 //...
@@ -375,14 +327,11 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
-                        singleMealIntent.putExtra("meal_id",meal_key);
-                        startActivity(singleMealIntent);
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent singleMealIntent = new Intent(MealsActivity.this,MealSingleActivity.class);
+                    singleMealIntent.putExtra("meal_id",meal_key);
+                    startActivity(singleMealIntent);
 
-                    }
                 });
 
             }
@@ -390,9 +339,9 @@ public class MealsActivity extends AppCompatActivity implements NavigationView.O
         mMealList.setAdapter(firebaseRecyclerAdapter);
     }
     public static class MealViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-        ImageButton mLikeBtn;
-        ImageButton mDislikeBtn;
+        final View mView;
+        final ImageButton mLikeBtn;
+        final ImageButton mDislikeBtn;
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;

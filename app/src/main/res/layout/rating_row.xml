@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,14 +24,15 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="80dp"
                 android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                android:contentDescription="@string/rating_image" />
 
             <TextView
                 android:id="@+id/rating_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="rating  name"
+                android:text="@string/rating_name"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -56,7 +56,7 @@
                 android:id="@+id/rating_coment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/textview" />
         </LinearLayout>
     </LinearLayout>
 

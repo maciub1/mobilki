@@ -26,12 +26,12 @@
             android:title="@string/diets"
             android:icon="@drawable/ic_diets"/>
 
-        <!--
+
         <item
             android:id="@+id/nav_settings"
             android:title="@string/settings"
             android:icon="@drawable/ic_settings"/>
-         -->
+
 
         <item
             android:id="@+id/nav_logout"

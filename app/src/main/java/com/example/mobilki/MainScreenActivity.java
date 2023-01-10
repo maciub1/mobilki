@@ -126,8 +126,7 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         navigationView.setCheckedItem(R.id.nav_home);
 
 
-        /*decreaseBtn = findViewById(R.id.button_decrease);
-        increaseBtn = findViewById(R.id.button_increase);*/
+
 
         progressBarCalories = findViewById(R.id.calories_progress_bar);
         progressBarCarbohydrates = findViewById(R.id.carbohydrate_progress_bar);
@@ -244,12 +243,9 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 }
             });
         }
-        mAddMealToEatenBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ProductSelectIntent = new Intent(MainScreenActivity.this, MealSelectActivity.class);
-                startActivityForResult(ProductSelectIntent, MEAL_REQUEST);
-            }
+        mAddMealToEatenBtn.setOnClickListener(v -> {
+            Intent ProductSelectIntent = new Intent(MainScreenActivity.this, MealSelectActivity.class);
+            startActivityForResult(ProductSelectIntent, MEAL_REQUEST);
         });
 
 
@@ -324,10 +320,10 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 startActivity(dietsIntent);
                 break;
 
-            /*case R.id.nav_settings:
+            case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainScreenActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                break;*/
+                break;
             case R.id.nav_logout:
                 //Log out user
                 //...
@@ -375,8 +371,7 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
 
 
 
-        /*progressBar.setProgress(progress);
-        progressBarTV.setText(Integer.toString(progress) + "%");*/
+
     }
 
     private void checkUserExist() {

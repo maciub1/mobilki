@@ -26,12 +26,6 @@ public class MealSelectActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseMeals;
     private RecyclerView mMealList;
     private EditText mSearchField;
-    private ImageButton mSearchBtn;
-    private Button mVegetarianBtn;
-    private Button mGlutenFreeBtn;
-    private Button mVeganBtn;
-    private Button mAllBtn;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,49 +34,26 @@ public class MealSelectActivity extends AppCompatActivity {
 
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
         mSearchField = (EditText) findViewById(R.id.MealSearch);
-        mAuth = FirebaseAuth.getInstance();
-        mSearchBtn = (ImageButton) findViewById(R.id.mealSearchBt);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        ImageButton mSearchBtn = (ImageButton) findViewById(R.id.mealSearchBt);
         mMealList = (RecyclerView) findViewById(R.id.mealList);
         mMealList.setHasFixedSize(true);
         mMealList.setLayoutManager(new LinearLayoutManager(this));
-        mVegetarianBtn = (Button) findViewById(R.id.vegetarianBt);
-        mGlutenFreeBtn = (Button) findViewById(R.id.glutenFreeBt);
-        mVeganBtn = (Button) findViewById(R.id.veganBt);
-        mAllBtn = (Button) findViewById(R.id.allBt);
-        mVegetarianBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegetarian();
-            }
-        });
+        Button mVegetarianBtn = (Button) findViewById(R.id.vegetarianBt);
+        Button mGlutenFreeBtn = (Button) findViewById(R.id.glutenFreeBt);
+        Button mVeganBtn = (Button) findViewById(R.id.veganBt);
+        Button mAllBtn = (Button) findViewById(R.id.allBt);
+        mVegetarianBtn.setOnClickListener(v -> showVegetarian());
 
-        mVeganBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegan();
-            }
-        });
+        mVeganBtn.setOnClickListener(v -> showVegan());
 
-        mGlutenFreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGlutenFree();
-            }
-        });
+        mGlutenFreeBtn.setOnClickListener(v -> showGlutenFree());
 
-        mAllBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStart();
-            }
-        });
+        mAllBtn.setOnClickListener(v -> onStart());
 
-        mSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = mSearchField.getText().toString();
-                mealSearch(searchText);
-            }
+        mSearchBtn.setOnClickListener(v -> {
+            String searchText = mSearchField.getText().toString();
+            mealSearch(searchText);
         });
     }
 
@@ -100,33 +71,30 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("meal id",meal_key);
-                        mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                                returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                                returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                                returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
-                                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                                setResult(Activity.RESULT_OK,returnIntent);
-                                finish();
-                            }
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("meal id",meal_key);
+                    mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
                 });
             }
         };
@@ -148,34 +116,31 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("meal id",meal_key);
-                        mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                                returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                                returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                                returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
-                                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                                setResult(Activity.RESULT_OK,returnIntent);
-                                finish();
-                            }
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("meal id",meal_key);
+                    mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        }
+                    });
 
 
-                    }
                 });
 
 
@@ -198,33 +163,30 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("meal id",meal_key);
-                        mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                                returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                                returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                                returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
-                                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                                setResult(Activity.RESULT_OK,returnIntent);
-                                finish();
-                            }
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("meal id",meal_key);
+                    mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
                 });
 
             }
@@ -246,33 +208,30 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("meal id",meal_key);
-                        mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                                returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                                returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                                returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
-                                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                                setResult(Activity.RESULT_OK,returnIntent);
-                                finish();
-                            }
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("meal id",meal_key);
+                    mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
                 });
 
             }
@@ -296,33 +255,30 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setCalories(meal.getCalories());
                 mealViewHolder.setImage(meal.getImage());
-                mealViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("meal id",meal_key);
-                        mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                                returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                                returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                                returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
-                                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                                setResult(Activity.RESULT_OK,returnIntent);
-                                finish();
-                            }
+                mealViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("meal id",meal_key);
+                    mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
                 });
 
             }

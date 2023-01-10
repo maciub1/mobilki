@@ -179,17 +179,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -216,17 +213,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -286,17 +280,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -323,17 +314,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -392,17 +380,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -429,17 +414,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -512,17 +494,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -549,17 +528,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -629,17 +605,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -666,17 +639,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -736,20 +706,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych",
-                                                        Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes")
-                                                        .child(mAuth.getCurrentUser().getUid()).
-                                                        setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych",
+                                                    Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes")
+                                                    .child(mAuth.getCurrentUser().getUid()).
+                                                    setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -776,17 +743,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
                                 }else{
-                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
                                 }
@@ -847,17 +811,14 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                                     mProcessLike = false;
 
                                 } else{
-                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                            {
-                                                Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
-                                                mProcessLike = false;
-                                            } else{
-                                                mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
-                                                mProcessLike = false;
-                                            }
+                                    mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
+                                        {
+                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                            mProcessLike = false;
+                                        } else{
+                                            mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
+                                            mProcessLike = false;
                                         }
                                     });
 
@@ -1060,7 +1021,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 Intent mealsIntent = new Intent(ProductActivity.this, MealsActivity.class);
                 startActivity(mealsIntent);
                 break;
-            /*case R.id.nav_diets:
+            case R.id.nav_diets:
                 Intent dietsIntent = new Intent(ProductActivity.this, DietActivity.class);
                 startActivity(dietsIntent);
                 break;
@@ -1072,7 +1033,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(ProductActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                break;*/
+                break;
             case R.id.nav_logout:
                 //Log out user
                 //...

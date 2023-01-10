@@ -16,15 +16,16 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:maxHeight="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/diet_image" />
 
         <TextView
             android:id="@+id/diet_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="diet_name"
-            android:textSize="16dp"
+            android:text="@string/diet_name"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <RatingBar

@@ -31,7 +31,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:contentDescription="@string/single_diet_image" />
 
             <RatingBar
                 android:id="@+id/RatingBar"
@@ -57,7 +58,7 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:padding="10dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/SingleDietDesc"
@@ -164,7 +165,8 @@
                 android:hint="@string/write_comment"
                 android:inputType="textMultiLine"
                 android:minHeight="48dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:importantForAutofill="no" />
 
             <Button
                 android:id="@+id/addRatingBtn"

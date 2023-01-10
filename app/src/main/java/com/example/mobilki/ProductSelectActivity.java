@@ -31,23 +31,12 @@ import com.squareup.picasso.Picasso;
 public class ProductSelectActivity extends AppCompatActivity {
     private RecyclerView mProductList;
     private EditText mSearchField;
-    private ImageButton mSearchBtn;
-    private Button mLikesBtn;
-    private Button mDislikesBtn;
-    private Button mVegetarianBtn;
-    private Button mGlutenFreeBtn;
-    private Button mVeganBtn;
-    private Button mAllBtn;
 
     private FirebaseAuth mAuth;
 
-    private DatabaseReference mDatabaseUsers;
     private DatabaseReference mDatabaseProducts;
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText gramsField;
-    private Button saveBtn;
-    private Button cancelBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,69 +44,36 @@ public class ProductSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_select);
 
         mSearchField = findViewById(R.id.productSearch);
-        mSearchBtn = findViewById(R.id.productSearchBt);
+        ImageButton mSearchBtn = findViewById(R.id.productSearchBt);
         mProductList = findViewById(R.id.productList);
         mProductList.setHasFixedSize(true);
         mProductList.setLayoutManager(new LinearLayoutManager(this));
-        mLikesBtn = findViewById(R.id.likesBt);
-        mDislikesBtn = findViewById(R.id.dislikesBt);
-        mVegetarianBtn = findViewById(R.id.vegetarianBt);
-        mGlutenFreeBtn = findViewById(R.id.glutenFreeBt);
-        mVeganBtn = findViewById(R.id.veganBt);
-        mAllBtn = findViewById(R.id.allBt);
+        Button mLikesBtn = findViewById(R.id.likesBt);
+        Button mDislikesBtn = findViewById(R.id.dislikesBt);
+        Button mVegetarianBtn = findViewById(R.id.vegetarianBt);
+        Button mGlutenFreeBtn = findViewById(R.id.glutenFreeBt);
+        Button mVeganBtn = findViewById(R.id.veganBt);
+        Button mAllBtn = findViewById(R.id.allBt);
 
         mAuth = FirebaseAuth.getInstance();
 
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mDatabaseProducts = FirebaseDatabase.getInstance().getReference().child("Products");
-        mLikesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLikes();
-            }
-        });
+        mLikesBtn.setOnClickListener(v -> showLikes());
 
-        mDislikesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDislikes();
-            }
-        });
+        mDislikesBtn.setOnClickListener(v -> showDislikes());
 
-        mVegetarianBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegetarian();
-            }
-        });
+        mVegetarianBtn.setOnClickListener(v -> showVegetarian());
 
-        mVeganBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showVegan();
-            }
-        });
+        mVeganBtn.setOnClickListener(v -> showVegan());
 
-        mGlutenFreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showGlutenFree();
-            }
-        });
+        mGlutenFreeBtn.setOnClickListener(v -> showGlutenFree());
 
-        mAllBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStart();
-            }
-        });
+        mAllBtn.setOnClickListener(v -> onStart());
 
-        mSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = mSearchField.getText().toString();
-                productSearch(searchText);
-            }
+        mSearchBtn.setOnClickListener(v -> {
+            String searchText = mSearchField.getText().toString();
+            productSearch(searchText);
         });
     }
 
@@ -134,13 +90,10 @@ public class ProductSelectActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
 
             }
@@ -161,13 +114,10 @@ public class ProductSelectActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
 
             }
@@ -188,13 +138,10 @@ public class ProductSelectActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
 
             }
@@ -215,13 +162,10 @@ public class ProductSelectActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
 
             }
@@ -239,30 +183,24 @@ public class ProductSelectActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
-                mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
-                            productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            productViewHolder.mView.setLayoutParams(layoutParams);
-                        }else{
-                            productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
-
-                        }
+                mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
+                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                        productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        productViewHolder.mView.setLayoutParams(layoutParams);
+                    }else{
+                        productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
 
                     }
+
                 });
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
             }
         };
@@ -280,30 +218,24 @@ public class ProductSelectActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
-                mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
-                            productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            productViewHolder.mView.setLayoutParams(layoutParams);
-                        }else{
-                            productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
-
-                        }
+                mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
+                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                        productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        productViewHolder.mView.setLayoutParams(layoutParams);
+                    }else{
+                        productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
 
                     }
+
                 });
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
             }
         };
@@ -324,13 +256,10 @@ public class ProductSelectActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("product id",product_key);
-                        createNewGramsDialog(returnIntent,product_key);
-                    }
+                productViewHolder.mView.setOnClickListener(v -> {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("product id",product_key);
+                    createNewGramsDialog(returnIntent,product_key);
                 });
 
             }
@@ -339,8 +268,8 @@ public class ProductSelectActivity extends AppCompatActivity {
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-        FirebaseAuth mAuth;
+        final View mView;
+        final FirebaseAuth mAuth;
 
         DatabaseReference mDatabaseLike;
         DatabaseReference mDatabaseDislike;
@@ -366,61 +295,50 @@ public class ProductSelectActivity extends AppCompatActivity {
 
     }
     public void createNewGramsDialog(Intent returnIntent, String product_key){
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View gramsPopupView = getLayoutInflater().inflate(R.layout.popup,null);
         gramsField = gramsPopupView.findViewById(R.id.gramsField);
-        saveBtn = gramsPopupView.findViewById(R.id.saveBtn);
-        cancelBtn = gramsPopupView.findViewById(R.id.cancelBtn);
+        Button saveBtn = gramsPopupView.findViewById(R.id.saveBtn);
+        Button cancelBtn = gramsPopupView.findViewById(R.id.cancelBtn);
         dialogBuilder.setView(gramsPopupView);
-        dialog=dialogBuilder.create();
+        dialog= dialogBuilder.create();
         dialog.show();
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+        cancelBtn.setOnClickListener(v -> dialog.dismiss());
+        saveBtn.setOnClickListener(v -> mDatabaseProducts.child(product_key).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                double calories =Double.parseDouble((String) snapshot.child("calories").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                calories *= 100;
+                calories = Math.round(calories);
+                calories /= 100;
+                returnIntent.putExtra("calories",Double.toString(calories));
+                double carbohydrates =Double.parseDouble((String) snapshot.child("carbohydrates").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                carbohydrates *= 100;
+                carbohydrates = Math.round(carbohydrates);
+                carbohydrates /= 100;
+                returnIntent.putExtra("carbohydrates",Double.toString(carbohydrates));
+                double fat =Double.parseDouble((String) snapshot.child("fat").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                fat *= 100;
+                fat = Math.round(fat);
+                fat /= 100;
+                returnIntent.putExtra("fat",Double.toString(fat));
+                double proteins =Double.parseDouble((String) snapshot.child("proteins").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                proteins *= 100;
+                proteins = Math.round(proteins);
+                proteins /= 100;
+                returnIntent.putExtra("proteins",Double.toString(proteins));
+                returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
+                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
+                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
+                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
             }
-        });
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                mDatabaseProducts.child(product_key).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        double calories =Double.parseDouble((String) snapshot.child("calories").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
-                        calories *= 100;
-                        calories = Math.round(calories);
-                        calories /= 100;
-                        returnIntent.putExtra("calories",Double.toString(calories));
-                        double carbohydrates =Double.parseDouble((String) snapshot.child("carbohydrates").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
-                        carbohydrates *= 100;
-                        carbohydrates = Math.round(carbohydrates);
-                        carbohydrates /= 100;
-                        returnIntent.putExtra("carbohydrates",Double.toString(carbohydrates));
-                        double fat =Double.parseDouble((String) snapshot.child("fat").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
-                        fat *= 100;
-                        fat = Math.round(fat);
-                        fat /= 100;
-                        returnIntent.putExtra("fat",Double.toString(fat));
-                        double proteins =Double.parseDouble((String) snapshot.child("proteins").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
-                        proteins *= 100;
-                        proteins = Math.round(proteins);
-                        proteins /= 100;
-                        returnIntent.putExtra("proteins",Double.toString(proteins));
-                        returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                        returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                        returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                        returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                        setResult(Activity.RESULT_OK,returnIntent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        }));
     }
 }

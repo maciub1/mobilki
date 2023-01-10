@@ -72,21 +72,13 @@ public class ProductAddActivity extends AppCompatActivity {
 
         Button mSubmitBtn = findViewById(R.id.addProductBtn);
 
-        mProductSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_REQUEST);
-            }
+        mProductSelectImage.setOnClickListener(view -> {
+            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent,GALLERY_REQUEST);
         });
 
-        mSubmitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addProduct();
-            }
-        });
+        mSubmitBtn.setOnClickListener(view -> addProduct());
 
     }
 
@@ -105,68 +97,51 @@ public class ProductAddActivity extends AppCompatActivity {
 
             StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
             final UploadTask uploadTask = filepath.putFile(mImageUri);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                            if (!task.isSuccessful()) {
-                                throw task.getException();
-
-                            }
-                            // Continue with the task to get the download URL
-                            return filepath.getDownloadUrl();
-
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful()) {
-                                String downloadUri = task.getResult().toString();
-                                DatabaseReference newProduct = mDatabaseProducts.push();
-
-                                newProduct.child("name").setValue(name_val);
-                                newProduct.child("image").setValue(downloadUri);
-                                newProduct.child("calories").setValue(calories_val);
-                                newProduct.child("carbohydrates").setValue(carbohydrates_val);
-                                newProduct.child("proteins").setValue(proteins_val);
-                                newProduct.child("fat").setValue(fat_val);
-
-
-                                newProduct.child("uid").setValue(mAuth.getCurrentUser().getUid());
-                                newProduct.child("tags").child("vegetarian").setValue("0");
-                                newProduct.child("tags").child("vegan").setValue("0");
-                                newProduct.child("tags").child("gluten free").setValue("0");
-                                if(!tags.isEmpty())
-                                {
-                                    if(tags.contains("vegetarian"))
-                                        newProduct.child("tags").child("vegetarian").setValue("1");
-                                    if(tags.contains("vegan"))
-                                        newProduct.child("tags").child("vegan").setValue("1");
-                                    if(tags.contains("gluten free"))
-                                        newProduct.child("tags").child("gluten free").setValue("1");
-                                }
-
-
-                                mProgress.dismiss();
-
-                                Intent productIntent = new Intent(ProductAddActivity.this, ProductActivity.class);
-                                productIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(productIntent);
-
-
-                            }
-                        }
-                    });
+            uploadTask.addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
 
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+                // Continue with the task to get the download URL
+                return filepath.getDownloadUrl();
+
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String downloadUri = task.getResult().toString();
+                    DatabaseReference newProduct = mDatabaseProducts.push();
+
+                    newProduct.child("name").setValue(name_val);
+                    newProduct.child("image").setValue(downloadUri);
+                    newProduct.child("calories").setValue(calories_val);
+                    newProduct.child("carbohydrates").setValue(carbohydrates_val);
+                    newProduct.child("proteins").setValue(proteins_val);
+                    newProduct.child("fat").setValue(fat_val);
+
+
+                    newProduct.child("uid").setValue(mAuth.getCurrentUser().getUid());
+                    newProduct.child("tags").child("vegetarian").setValue("0");
+                    newProduct.child("tags").child("vegan").setValue("0");
+                    newProduct.child("tags").child("gluten free").setValue("0");
+                    if (!tags.isEmpty()) {
+                        if (tags.contains("vegetarian"))
+                            newProduct.child("tags").child("vegetarian").setValue("1");
+                        if (tags.contains("vegan"))
+                            newProduct.child("tags").child("vegan").setValue("1");
+                        if (tags.contains("gluten free"))
+                            newProduct.child("tags").child("gluten free").setValue("1");
+                    }
+
+
+                    mProgress.dismiss();
+
+                    Intent productIntent = new Intent(ProductAddActivity.this, ProductActivity.class);
+                    productIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(productIntent);
+
+
                 }
-            });
+            })).addOnFailureListener(e -> {
+                });
 
         } else{
             Toast.makeText(ProductAddActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_LONG).show();

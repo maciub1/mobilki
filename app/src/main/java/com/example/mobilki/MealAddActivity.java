@@ -21,11 +21,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,7 +39,6 @@ public class MealAddActivity extends AppCompatActivity {
     private StorageReference mStorageImage;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseMeals;
-    private DatabaseReference mDatabaseUsers;
     private ProgressDialog mProgress;
     private  double mCalories=0;
     private  double mCarbohydrates=0;
@@ -51,7 +47,7 @@ public class MealAddActivity extends AppCompatActivity {
     private  boolean mGlutenFree=true;
     private  boolean mVegan=true;
     private  boolean mVegetarian=true;
-    List<String> product_ids = new ArrayList<String>();
+    final List<String> product_ids = new ArrayList<>();
     private Button mAcceptBtn;
 
     private static final int GALLERY_REQUEST = 1;
@@ -66,32 +62,21 @@ public class MealAddActivity extends AppCompatActivity {
         mMealName = findViewById(R.id.MealName);
         mStorageImage = FirebaseStorage.getInstance().getReference().child("Meal_images");
         mDatabaseMeals = FirebaseDatabase.getInstance().getReference().child("Meals");
-        mDatabaseUsers= FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
         mProgress = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         mAddProductToMealBtn = findViewById(R.id.AddProductToMealBtn);
         mAcceptBtn = findViewById(R.id.acceptBtn);
-        mMealSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_REQUEST);
-            }
+        mMealSelectImage.setOnClickListener(view -> {
+            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent,GALLERY_REQUEST);
         });
-        mAddProductToMealBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ProductSelectIntent = new Intent(MealAddActivity.this,ProductSelectActivity.class);
-                startActivityForResult(ProductSelectIntent,PRODUCT_REQUEST);
-            }
+        mAddProductToMealBtn.setOnClickListener(v -> {
+            Intent ProductSelectIntent = new Intent(MealAddActivity.this,ProductSelectActivity.class);
+            startActivityForResult(ProductSelectIntent,PRODUCT_REQUEST);
         });
-        mAcceptBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMeal();
-            }
-        });
+        mAcceptBtn.setOnClickListener(v -> addMeal());
     }
 
     private void addMeal() {
@@ -102,68 +87,50 @@ public class MealAddActivity extends AppCompatActivity {
             mProgress.show();
             StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
             final UploadTask uploadTask = filepath.putFile(mImageUri);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                            if (!task.isSuccessful()) {
-                                throw task.getException();
-
-                            }
-                            // Continue with the task to get the download URL
-                            return filepath.getDownloadUrl();
-
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful()) {
-                                String downloadUri = task.getResult().toString();
-                                DatabaseReference newMeal = mDatabaseMeals.push();
-
-                                newMeal.child("name").setValue(name_val);
-                                newMeal.child("image").setValue(downloadUri);
-                                newMeal.child("calories").setValue(Double.toString(mCalories));
-                                newMeal.child("carbohydrates").setValue(Double.toString(mCarbohydrates));
-                                newMeal.child("proteins").setValue(Double.toString(mProteins));
-                                newMeal.child("fat").setValue(Double.toString(mFat));
-                                newMeal.child("uid").setValue(mAuth.getCurrentUser().getUid());
-                                newMeal.child("tags").child("vegetarian").setValue("1");
-                                newMeal.child("tags").child("vegan").setValue("1");
-                                newMeal.child("tags").child("gluten free").setValue("1");
-                                if(!mVegetarian)
-                                    newMeal.child("tags").child("vegetarian").setValue("0");
-                                if(!mVegan)
-                                    newMeal.child("tags").child("vegan").setValue("0");
-                                if(!mGlutenFree)
-                                    newMeal.child("tags").child("gluten free").setValue("0");
-                                for(String id : product_ids){
-                                    newMeal.child("Products").child(id).setValue("product id");
-                                }
-
-
-
-
-                                mProgress.dismiss();
-
-                                Intent mealIntent = new Intent(MealAddActivity.this, MealsActivity.class);
-                                mealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(mealIntent);
-
-
-                            }
-                        }
-                    });
+            uploadTask.addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
 
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+                // Continue with the task to get the download URL
+                return filepath.getDownloadUrl();
+
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String downloadUri = task.getResult().toString();
+                    DatabaseReference newMeal = mDatabaseMeals.push();
+
+                    newMeal.child("name").setValue(name_val);
+                    newMeal.child("image").setValue(downloadUri);
+                    newMeal.child("calories").setValue(Double.toString(mCalories));
+                    newMeal.child("carbohydrates").setValue(Double.toString(mCarbohydrates));
+                    newMeal.child("proteins").setValue(Double.toString(mProteins));
+                    newMeal.child("fat").setValue(Double.toString(mFat));
+                    newMeal.child("uid").setValue(mAuth.getCurrentUser().getUid());
+                    newMeal.child("tags").child("vegetarian").setValue("1");
+                    newMeal.child("tags").child("vegan").setValue("1");
+                    newMeal.child("tags").child("gluten free").setValue("1");
+                    if (!mVegetarian)
+                        newMeal.child("tags").child("vegetarian").setValue("0");
+                    if (!mVegan)
+                        newMeal.child("tags").child("vegan").setValue("0");
+                    if (!mGlutenFree)
+                        newMeal.child("tags").child("gluten free").setValue("0");
+                    for (String id : product_ids) {
+                        newMeal.child("Products").child(id).setValue("product id");
+                    }
+
+
+                    mProgress.dismiss();
+
+                    Intent mealIntent = new Intent(MealAddActivity.this, MealsActivity.class);
+                    mealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mealIntent);
+
+
                 }
-            });
+            })).addOnFailureListener(e -> {
+                });
 
         }else
             Toast.makeText(MealAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();

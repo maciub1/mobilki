@@ -30,7 +30,8 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="300dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:contentDescription="@string/single_meal_image" />
 
             <TextView
                 android:id="@+id/SingleMealName"
@@ -44,7 +45,7 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:padding="10dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView

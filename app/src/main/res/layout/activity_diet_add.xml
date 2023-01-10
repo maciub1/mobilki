@@ -27,7 +27,8 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="200dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:contentDescription="@string/diet_image_select_button" />
 
             <EditText
                 android:id="@+id/DietName"
@@ -41,7 +42,8 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
+                android:paddingRight="10dp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/DietDesc"
@@ -57,7 +59,7 @@
                 android:minHeight="48dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                 />
+                android:importantForAutofill="no" />
 
             <TextView
                 android:id="@+id/AddedMeals"
@@ -83,7 +85,7 @@
                     android:id="@+id/caloriesField"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_weight="1"
                     android:text="@string/calories_0" />
 
@@ -108,7 +110,7 @@
                     android:id="@+id/proteinsField"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_weight="1"
                     android:text="@string/proteins_0"
                     />

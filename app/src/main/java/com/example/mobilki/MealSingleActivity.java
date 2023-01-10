@@ -100,13 +100,10 @@ public class MealSingleActivity extends AppCompatActivity {
 
             }
         });
-        mMealRemoveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabaseMeals.child(mMealKey).removeValue();
-                Intent ProductsIntent = new Intent(MealSingleActivity.this, MealsActivity.class);
-                startActivity(ProductsIntent);
-            }
+        mMealRemoveBtn.setOnClickListener(v -> {
+            mDatabaseMeals.child(mMealKey).removeValue();
+            Intent ProductsIntent = new Intent(MealSingleActivity.this, MealsActivity.class);
+            startActivity(ProductsIntent);
         });
     }
 
@@ -125,17 +122,14 @@ public class MealSingleActivity extends AppCompatActivity {
                 String product_key = getRef(i).getKey();
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
-                mDatabaseMeals.child(mMealKey).child("Products").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(!task.getResult().hasChild(product_key)) {
-                            productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
-                            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            productViewHolder.mView.setLayoutParams(layoutParams);
-                        }
-
+                mDatabaseMeals.child(mMealKey).child("Products").get().addOnCompleteListener(task -> {
+                    if(!task.getResult().hasChild(product_key)) {
+                        productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
+                        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        productViewHolder.mView.setLayoutParams(layoutParams);
                     }
+
                 });
 
             }
@@ -144,8 +138,8 @@ public class MealSingleActivity extends AppCompatActivity {
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-        FirebaseAuth mAuth;
+        final View mView;
+        final FirebaseAuth mAuth;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
