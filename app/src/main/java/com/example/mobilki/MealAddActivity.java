@@ -95,10 +95,10 @@ public class MealAddActivity extends AppCompatActivity {
 
                     newMeal.child("name").setValue(name_val);
                     newMeal.child("image").setValue(downloadUri);
-                    newMeal.child("calories").setValue(Double.toString(mCalories));
-                    newMeal.child("carbohydrates").setValue(Double.toString(mCarbohydrates));
-                    newMeal.child("proteins").setValue(Double.toString(mProteins));
-                    newMeal.child("fat").setValue(Double.toString(mFat));
+                    newMeal.child("calories").setValue(Double.toString(Math.round(mCalories*100.0)/100.0));
+                    newMeal.child("carbohydrates").setValue(Double.toString(Math.round(mCarbohydrates*100.0)/100.0));
+                    newMeal.child("proteins").setValue(Double.toString(Math.round(mProteins*100.0)/100.0));
+                    newMeal.child("fat").setValue(Double.toString(Math.round(mFat*100.0)/100.0));
                     newMeal.child("uid").setValue(mAuth.getCurrentUser().getUid());
                     newMeal.child("tags").child("vegetarian").setValue("1");
                     newMeal.child("tags").child("vegan").setValue("1");
