@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(MainActivity.this, "Co poszło nie tak",
+                        Toast.makeText(MainActivity.this, "Error",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            mProgress.setMessage("Logowanie ... ");
+            mProgress.setMessage("Log in ... ");
             mProgress.show();
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 mProgress.dismiss();
                 Log.w(TAG, "Google sign in failed", e);
-                Toast.makeText(MainActivity.this, "Logowanie nie powiodło się", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         String password = mPasswordField.getText().toString().trim();
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-            mProgress.setMessage("Sprawdzam dane logowania ...");
+            mProgress.setMessage("Checking user login data ...");
             mProgress.show();
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     mProgress.dismiss();
-                    Toast.makeText(MainActivity.this, "Błędne dane logowania", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Invalid login data", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            Toast.makeText(MainActivity.this, "Wprowadź dane", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         // If sign in fails, display a message to the user.
                         mProgress.dismiss();
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(MainActivity.this, "Logowanie nie powiodło się", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_LONG).show();
 
                     }
                 });

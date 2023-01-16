@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference mDatabaseUsers;
     private DatabaseReference mDatabaseDiets;
 
@@ -124,8 +124,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
 
         //You are here - check home item
         navigationView.setCheckedItem(R.id.nav_home);
-
-
 
 
         progressBarCalories = findViewById(R.id.calories_progress_bar);
@@ -297,10 +295,8 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-    {
-        switch (menuItem.getItemId())
-        {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 //You are here
                 break;
@@ -336,10 +332,9 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    private void updateProgressBars()
-    {
+    private void updateProgressBars() {
         mDatabaseUsers.child(uid).child("Eaten").get().addOnCompleteListener(task -> {
-            for(DataSnapshot meal : task.getResult().getChildren()){
+            for (DataSnapshot meal : task.getResult().getChildren()) {
                 mDatabaseMeals.child(meal.getKey()).get().addOnCompleteListener(task1 -> {
                     progressCalories += Double.parseDouble(task1.getResult().child("calories").getValue().toString());
                     progressCarbohydrates += Double.parseDouble(task1.getResult().child("carbohydrates").getValue().toString());
@@ -348,15 +343,15 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
                 });
             }
             mDatabaseUsers.child(uid).get().addOnCompleteListener(task12 -> {
-                progressCalories = (progressCalories/Integer.parseInt(task12.getResult().child("calories req").getValue().toString()))*100.0;
-                progressCarbohydrates = (progressCarbohydrates/Integer.parseInt(task12.getResult().child("carbohydrates req").getValue().toString()))*100.0;
-                progressProteins = (progressProteins/Integer.parseInt(task12.getResult().child("proteins req").getValue().toString()))*100.0;
-                progressFats = (progressFats/Integer.parseInt(task12.getResult().child("fat req").getValue().toString()))*100.0;
+                progressCalories = (progressCalories / Integer.parseInt(task12.getResult().child("calories req").getValue().toString())) * 100.0;
+                progressCarbohydrates = (progressCarbohydrates / Integer.parseInt(task12.getResult().child("carbohydrates req").getValue().toString())) * 100.0;
+                progressProteins = (progressProteins / Integer.parseInt(task12.getResult().child("proteins req").getValue().toString())) * 100.0;
+                progressFats = (progressFats / Integer.parseInt(task12.getResult().child("fat req").getValue().toString())) * 100.0;
                 progressCalories = Math.round(progressCalories);
                 progressCarbohydrates = Math.round(progressCarbohydrates);
                 progressFats = Math.round(progressFats);
                 progressProteins = Math.round(progressProteins);
-                progressBarCalories.setProgress((int)progressCalories);
+                progressBarCalories.setProgress((int) progressCalories);
                 progressBarCarbohydrates.setProgress((int) progressCarbohydrates);
                 progressBarProteins.setProgress((int) progressProteins);
                 progressBarFats.setProgress((int) progressFats);
@@ -368,8 +363,6 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
             });
 
         });
-
-
 
 
     }
@@ -400,46 +393,50 @@ public class MainScreenActivity extends AppCompatActivity implements NavigationV
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==MEAL_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == MEAL_REQUEST && resultCode == RESULT_OK) {
             assert data != null;
             String meal_id = data.getStringExtra("meal id");
             mDatabaseUsers.child(uid).child("Eaten").child(meal_id).setValue("meal id");
         }
     }
 
-    public static class MealViewHolder extends RecyclerView.ViewHolder{
+    public static class MealViewHolder extends RecyclerView.ViewHolder {
         final View mView;
+
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
 
         }
-        public void setName(String name){
+
+        public void setName(String name) {
             TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
     }
 
-    public static class MealViewHolder2 extends RecyclerView.ViewHolder{
+    public static class MealViewHolder2 extends RecyclerView.ViewHolder {
         final View mView;
         final Button mEatBtn;
+
         public MealViewHolder2(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             mEatBtn = mView.findViewById(R.id.eatBtn);
 
         }
-        public void setName(String name){
+
+        public void setName(String name) {
             TextView product_name = mView.findViewById(R.id.productName2);
             product_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = mView.findViewById(R.id.productImage2);
             Picasso.get().load(image).into(product_image);
         }

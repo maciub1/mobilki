@@ -51,7 +51,7 @@ public class DietSingleActivity extends AppCompatActivity {
     private Button mAddRatingBtn;
     private TextView mDayField;
     private double ratings;
-    private long day=1;
+    private long day = 1;
     private long numberOfDays = 1;
 
     @Override
@@ -103,24 +103,24 @@ public class DietSingleActivity extends AppCompatActivity {
                 mDietName.setText(name);
                 mDietDesc.setText(desc);
                 Picasso.get().load(image).into(mDietSelectImage);
-                if(mAuth.getCurrentUser().getUid().equals(diet_uid)){
+                if (mAuth.getCurrentUser().getUid().equals(diet_uid)) {
                     mDietRemoveBtn.setVisibility(View.VISIBLE);
                 }
-                if(snapshot.child("tags").child("vegetarian").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegetarian").getValue().equals("1"))
                     mVegetarianLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("vegan").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegan").getValue().equals("1"))
                     mVeganLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("gluten free").getValue().equals("1"))
+                if (snapshot.child("tags").child("gluten free").getValue().equals("1"))
                     mGlutenFreeLabel.setVisibility(View.VISIBLE);
-                if(mAuth.getCurrentUser().isAnonymous()){
+                if (mAuth.getCurrentUser().isAnonymous()) {
                     mObserveBtn.setVisibility(View.GONE);
                 }
-                if(numberOfDays == 1)
+                if (numberOfDays == 1)
                     mNextDayBtn.setVisibility(View.INVISIBLE);
-                if(snapshot.child("Ratings").hasChild(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().isAnonymous())
+                if (snapshot.child("Ratings").hasChild(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().isAnonymous())
                     mAddRatingBar.setVisibility(View.GONE);
 
-                FirebaseRecyclerAdapter<Rating,RatingViewHolder> firebaseRecyclerAdapter2 = new FirebaseRecyclerAdapter<Rating, RatingViewHolder>(
+                FirebaseRecyclerAdapter<Rating, RatingViewHolder> firebaseRecyclerAdapter2 = new FirebaseRecyclerAdapter<Rating, RatingViewHolder>(
                         Rating.class,
                         R.layout.rating_row,
                         RatingViewHolder.class,
@@ -159,10 +159,10 @@ public class DietSingleActivity extends AppCompatActivity {
         mNextDayBtn.setOnClickListener(v -> {
             day++;
             mPreviousDayBtn.setVisibility(View.VISIBLE);
-            mDayField.setText("Meals in day: "+ day +":");
-            if(day==numberOfDays)
+            mDayField.setText("Meals in day: " + day + ":");
+            if (day == numberOfDays)
                 mNextDayBtn.setVisibility(View.INVISIBLE);
-            FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
+            FirebaseRecyclerAdapter<Meal, MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
                     Meal.class,
                     R.layout.product_select_row,
                     MealViewHolder.class,
@@ -189,10 +189,10 @@ public class DietSingleActivity extends AppCompatActivity {
         mPreviousDayBtn.setOnClickListener(v -> {
             day--;
             mNextDayBtn.setVisibility(View.VISIBLE);
-            mDayField.setText("Meals in day: "+ day +":");
-            if(day==1)
+            mDayField.setText("Meals in day: " + day + ":");
+            if (day == 1)
                 mPreviousDayBtn.setVisibility(View.INVISIBLE);
-            FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
+            FirebaseRecyclerAdapter<Meal, MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
                     Meal.class,
                     R.layout.product_select_row,
                     MealViewHolder.class,
@@ -217,13 +217,13 @@ public class DietSingleActivity extends AppCompatActivity {
         });
 
         mAddRatingBtn.setOnClickListener(v -> {
-            ratings=0;
-            mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("rating").setValue(Integer.toString((int)mAddRatingBar.getRating()));
+            ratings = 0;
+            mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("rating").setValue(Integer.toString((int) mAddRatingBar.getRating()));
             mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(task -> {
                 mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("name").setValue(task.getResult().child("name").getValue().toString());
                 mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("image").setValue(task.getResult().child("image").getValue().toString());
             });
-            if(!TextUtils.isEmpty(mAddComment.getText().toString()))
+            if (!TextUtils.isEmpty(mAddComment.getText().toString()))
                 mDatabaseDiets.child(mDietKey).child("Ratings").child(mAuth.getCurrentUser().getUid()).child("comment").setValue(mAddComment.getText().toString());
             mDatabaseDiets.child(mDietKey).child("Ratings").get().addOnCompleteListener(task -> {
                 for (DataSnapshot rating : task.getResult().getChildren())
@@ -242,7 +242,7 @@ public class DietSingleActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<Meal,MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
+        FirebaseRecyclerAdapter<Meal, MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealViewHolder>(
                 Meal.class,
                 R.layout.product_select_row,
                 MealViewHolder.class,
@@ -254,8 +254,7 @@ public class DietSingleActivity extends AppCompatActivity {
                 mealViewHolder.setName(meal.getName());
                 mealViewHolder.setImage(meal.getImage());
                 mDatabaseDiets.child(mDietKey).child("Meals").child(Long.toString(day)).get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(meal_key))
-                    {
+                    if (!task.getResult().hasChild(meal_key)) {
                         mealViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) mealViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
@@ -266,46 +265,52 @@ public class DietSingleActivity extends AppCompatActivity {
         };
         mMealsList.setAdapter(firebaseRecyclerAdapter);
     }
-    public static class MealViewHolder extends RecyclerView.ViewHolder{
+
+    public static class MealViewHolder extends RecyclerView.ViewHolder {
         final View mView;
+
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
 
         }
-        public void setName(String name){
+
+        public void setName(String name) {
             TextView product_name = (TextView) mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = (ImageView) mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
     }
 
-    public static class RatingViewHolder extends RecyclerView.ViewHolder{
+    public static class RatingViewHolder extends RecyclerView.ViewHolder {
         final View mView;
+
         public RatingViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
 
         }
-        public void setName(String name){
+
+        public void setName(String name) {
             TextView rating_name = (TextView) mView.findViewById(R.id.rating_name);
             rating_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView rating_image = (ImageView) mView.findViewById(R.id.rating_image);
             Picasso.get().load(image).into(rating_image);
         }
 
-        public void setRating(String rating){
+        public void setRating(String rating) {
             RatingBar rating_bar = mView.findViewById(R.id.rating_bar);
             rating_bar.setRating(Float.parseFloat(rating));
         }
-        public void setComment(String comment){
+
+        public void setComment(String comment) {
             TextView rating_comment = mView.findViewById(R.id.rating_coment);
             rating_comment.setText(comment);
         }

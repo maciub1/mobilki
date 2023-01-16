@@ -55,7 +55,7 @@ public class ProductSingleActivity extends AppCompatActivity {
         mVegetarianLabel = findViewById(R.id.vegetarianLabel);
         mVeganLabel = findViewById(R.id.veganLabel);
         mGlutenFreeLabel = findViewById(R.id.glutenFreeLabel);
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         mDatabaseProducts.child(mProductKey).addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,19 +68,19 @@ public class ProductSingleActivity extends AppCompatActivity {
                 String image = (String) snapshot.child("image").getValue();
                 String product_uid = (String) snapshot.child("uid").getValue();
                 mProductName.setText(name);
-                mCalories.setText(calories+"kcal");
-                mCarbohydrates.setText("Węglowodany: "+carbohydrates);
-                mProteins.setText("Białko: "+proteins);
-                mFat.setText("Tłuszcz: "+fat);
+                mCalories.setText(calories + "kcal");
+                mCarbohydrates.setText("Carbohydrates: " + carbohydrates);
+                mProteins.setText("Proteins: " + proteins);
+                mFat.setText("Fat: " + fat);
                 Picasso.get().load(image).into(mProductSelectImage);
-                if(mAuth.getCurrentUser().getUid().equals(product_uid)){
+                if (mAuth.getCurrentUser().getUid().equals(product_uid)) {
                     mProductRemoveBtn.setVisibility(View.VISIBLE);
                 }
-                if(snapshot.child("tags").child("vegetarian").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegetarian").getValue().equals("1"))
                     mVegetarianLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("vegan").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegan").getValue().equals("1"))
                     mVeganLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("gluten free").getValue().equals("1"))
+                if (snapshot.child("tags").child("gluten free").getValue().equals("1"))
                     mGlutenFreeLabel.setVisibility(View.VISIBLE);
             }
 

@@ -3,7 +3,7 @@ package com.example.mobilki;
 public class Rating {
     String name, image, rating, comment;
 
-    public Rating(){
+    public Rating() {
 
     }
 

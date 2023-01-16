@@ -63,7 +63,7 @@ public class MealSingleActivity extends AppCompatActivity {
         mVegetarianLabel = findViewById(R.id.vegetarianMealLabel);
         mVeganLabel = findViewById(R.id.veganMealLabel);
         mGlutenFreeLabel = findViewById(R.id.glutenFreeMealLabel);
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         mProductList = findViewById(R.id.productListM);
         mProductList.setNestedScrollingEnabled(false);
         mProductList.setHasFixedSize(false);
@@ -79,19 +79,19 @@ public class MealSingleActivity extends AppCompatActivity {
                 String image = (String) snapshot.child("image").getValue();
                 String meal_uid = (String) snapshot.child("uid").getValue();
                 mMealName.setText(name);
-                mCalories.setText(calories+"kcal");
-                mCarbohydrates.setText("Węglowodany: "+carbohydrates);
-                mProteins.setText("Białko: "+proteins);
-                mFat.setText("Tłuszcz: "+fat);
+                mCalories.setText(calories + "kcal");
+                mCarbohydrates.setText("Węglowodany: " + carbohydrates);
+                mProteins.setText("Białko: " + proteins);
+                mFat.setText("Tłuszcz: " + fat);
                 Picasso.get().load(image).into(mMealSelectImage);
-                if(mAuth.getCurrentUser().getUid().equals(meal_uid)){
+                if (mAuth.getCurrentUser().getUid().equals(meal_uid)) {
                     mMealRemoveBtn.setVisibility(View.VISIBLE);
                 }
-                if(snapshot.child("tags").child("vegetarian").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegetarian").getValue().equals("1"))
                     mVegetarianLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("vegan").getValue().equals("1"))
+                if (snapshot.child("tags").child("vegan").getValue().equals("1"))
                     mVeganLabel.setVisibility(View.VISIBLE);
-                if(snapshot.child("tags").child("gluten free").getValue().equals("1"))
+                if (snapshot.child("tags").child("gluten free").getValue().equals("1"))
                     mGlutenFreeLabel.setVisibility(View.VISIBLE);
             }
 
@@ -123,7 +123,7 @@ public class MealSingleActivity extends AppCompatActivity {
                 productViewHolder.setName(product.getName());
                 productViewHolder.setImage(product.getImage());
                 mDatabaseMeals.child(mMealKey).child("Products").get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(product_key)) {
+                    if (!task.getResult().hasChild(product_key)) {
                         productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
@@ -137,7 +137,7 @@ public class MealSingleActivity extends AppCompatActivity {
         mProductList.setAdapter(firebaseRecyclerAdapter);
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final FirebaseAuth mAuth;
 
@@ -150,13 +150,12 @@ public class MealSingleActivity extends AppCompatActivity {
         }
 
 
-
-        public void setName(String name){
+        public void setName(String name) {
             TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }

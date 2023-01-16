@@ -78,7 +78,7 @@ public class ProductSelectActivity extends AppCompatActivity {
     }
 
     private void productSearch(String searchText) {
-        Query searchQuery = mDatabaseProducts.orderByChild("name").startAt(searchText).endAt(searchText+"\uf8ff");
+        Query searchQuery = mDatabaseProducts.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Product, ProductViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(
                 Product.class,
                 R.layout.product_select_row,
@@ -92,8 +92,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
 
             }
@@ -116,8 +116,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
 
             }
@@ -140,8 +140,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
 
             }
@@ -164,8 +164,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
 
             }
@@ -184,12 +184,12 @@ public class ProductSelectActivity extends AppCompatActivity {
             protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
                 mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                    if (!task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
                         productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
                         productViewHolder.mView.setLayoutParams(layoutParams);
-                    }else{
+                    } else {
                         productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
 
                     }
@@ -199,8 +199,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
             }
         };
@@ -219,12 +219,12 @@ public class ProductSelectActivity extends AppCompatActivity {
             protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
                 mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                    if (!task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
                         productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
                         productViewHolder.mView.setLayoutParams(layoutParams);
-                    }else{
+                    } else {
                         productViewHolder.mView.findViewById(R.id.cardd).setVisibility(View.VISIBLE);
 
                     }
@@ -234,8 +234,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
             }
         };
@@ -258,8 +258,8 @@ public class ProductSelectActivity extends AppCompatActivity {
                 productViewHolder.setImage(product.getImage());
                 productViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("product id",product_key);
-                    createNewGramsDialog(returnIntent,product_key);
+                    returnIntent.putExtra("product id", product_key);
+                    createNewGramsDialog(returnIntent, product_key);
                 });
 
             }
@@ -267,7 +267,7 @@ public class ProductSelectActivity extends AppCompatActivity {
         mProductList.setAdapter(firebaseRecyclerAdapter);
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final FirebaseAuth mAuth;
 
@@ -282,56 +282,56 @@ public class ProductSelectActivity extends AppCompatActivity {
         }
 
 
-
-        public void setName(String name){
+        public void setName(String name) {
             TextView product_name = mView.findViewById(R.id.productName);
             product_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = mView.findViewById(R.id.productImage);
             Picasso.get().load(image).into(product_image);
         }
 
     }
-    public void createNewGramsDialog(Intent returnIntent, String product_key){
+
+    public void createNewGramsDialog(Intent returnIntent, String product_key) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final View gramsPopupView = getLayoutInflater().inflate(R.layout.popup,null);
+        final View gramsPopupView = getLayoutInflater().inflate(R.layout.popup, null);
         gramsField = gramsPopupView.findViewById(R.id.gramsField);
         Button saveBtn = gramsPopupView.findViewById(R.id.saveBtn);
         Button cancelBtn = gramsPopupView.findViewById(R.id.cancelBtn);
         dialogBuilder.setView(gramsPopupView);
-        dialog= dialogBuilder.create();
+        dialog = dialogBuilder.create();
         dialog.show();
         cancelBtn.setOnClickListener(v -> dialog.dismiss());
         saveBtn.setOnClickListener(v -> mDatabaseProducts.child(product_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                double calories =Double.parseDouble((String) snapshot.child("calories").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                double calories = Double.parseDouble((String) snapshot.child("calories").getValue()) / 100.0 * Integer.parseInt(gramsField.getText().toString());
                 calories *= 100;
                 calories = Math.round(calories);
                 calories /= 100;
-                returnIntent.putExtra("calories",Double.toString(calories));
-                double carbohydrates =Double.parseDouble((String) snapshot.child("carbohydrates").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                returnIntent.putExtra("calories", Double.toString(calories));
+                double carbohydrates = Double.parseDouble((String) snapshot.child("carbohydrates").getValue()) / 100.0 * Integer.parseInt(gramsField.getText().toString());
                 carbohydrates *= 100;
                 carbohydrates = Math.round(carbohydrates);
                 carbohydrates /= 100;
-                returnIntent.putExtra("carbohydrates",Double.toString(carbohydrates));
-                double fat =Double.parseDouble((String) snapshot.child("fat").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                returnIntent.putExtra("carbohydrates", Double.toString(carbohydrates));
+                double fat = Double.parseDouble((String) snapshot.child("fat").getValue()) / 100.0 * Integer.parseInt(gramsField.getText().toString());
                 fat *= 100;
                 fat = Math.round(fat);
                 fat /= 100;
-                returnIntent.putExtra("fat",Double.toString(fat));
-                double proteins =Double.parseDouble((String) snapshot.child("proteins").getValue())/100.0*Integer.parseInt(gramsField.getText().toString());
+                returnIntent.putExtra("fat", Double.toString(fat));
+                double proteins = Double.parseDouble((String) snapshot.child("proteins").getValue()) / 100.0 * Integer.parseInt(gramsField.getText().toString());
                 proteins *= 100;
                 proteins = Math.round(proteins);
                 proteins /= 100;
-                returnIntent.putExtra("proteins",Double.toString(proteins));
+                returnIntent.putExtra("proteins", Double.toString(proteins));
                 returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                setResult(Activity.RESULT_OK,returnIntent);
+                returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
 

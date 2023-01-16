@@ -58,7 +58,7 @@ public class MealSelectActivity extends AppCompatActivity {
     }
 
     private void mealSearch(String searchText) {
-        Query searchQuery = mDatabaseMeals.orderByChild("name").startAt(searchText).endAt(searchText+"\uf8ff");
+        Query searchQuery = mDatabaseMeals.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Meal, MealsActivity.MealViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Meal, MealsActivity.MealViewHolder>(
                 Meal.class,
                 R.layout.product_row,
@@ -73,19 +73,19 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setImage(meal.getImage());
                 mealViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("meal id",meal_key);
+                    returnIntent.putExtra("meal id", meal_key);
                     mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("calories", (String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates", (String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat", (String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins", (String) snapshot.child("proteins").getValue());
                             returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
+                            returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
 
@@ -118,19 +118,19 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setImage(meal.getImage());
                 mealViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("meal id",meal_key);
+                    returnIntent.putExtra("meal id", meal_key);
                     mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("calories", (String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates", (String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat", (String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins", (String) snapshot.child("proteins").getValue());
                             returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
+                            returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
 
@@ -165,19 +165,19 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setImage(meal.getImage());
                 mealViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("meal id",meal_key);
+                    returnIntent.putExtra("meal id", meal_key);
                     mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("calories", (String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates", (String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat", (String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins", (String) snapshot.child("proteins").getValue());
                             returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
+                            returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
 
@@ -210,19 +210,19 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setImage(meal.getImage());
                 mealViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("meal id",meal_key);
+                    returnIntent.putExtra("meal id", meal_key);
                     mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("calories", (String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates", (String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat", (String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins", (String) snapshot.child("proteins").getValue());
                             returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
+                            returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
 
@@ -257,19 +257,19 @@ public class MealSelectActivity extends AppCompatActivity {
                 mealViewHolder.setImage(meal.getImage());
                 mealViewHolder.mView.setOnClickListener(v -> {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("meal id",meal_key);
+                    returnIntent.putExtra("meal id", meal_key);
                     mDatabaseMeals.child(meal_key).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            returnIntent.putExtra("calories",(String) snapshot.child("calories").getValue());
-                            returnIntent.putExtra("carbohydrates",(String) snapshot.child("carbohydrates").getValue());
-                            returnIntent.putExtra("fat",(String) snapshot.child("fat").getValue());
-                            returnIntent.putExtra("proteins",(String) snapshot.child("proteins").getValue());
+                            returnIntent.putExtra("calories", (String) snapshot.child("calories").getValue());
+                            returnIntent.putExtra("carbohydrates", (String) snapshot.child("carbohydrates").getValue());
+                            returnIntent.putExtra("fat", (String) snapshot.child("fat").getValue());
+                            returnIntent.putExtra("proteins", (String) snapshot.child("proteins").getValue());
                             returnIntent.putExtra("name", snapshot.child("name").getValue().toString());
-                            returnIntent.putExtra("vegetarian",snapshot.child("tags").child("vegetarian").getValue().toString());
-                            returnIntent.putExtra("vegan",snapshot.child("tags").child("vegan").getValue().toString());
-                            returnIntent.putExtra("gluten free",snapshot.child("tags").child("gluten free").getValue().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
+                            returnIntent.putExtra("vegetarian", snapshot.child("tags").child("vegetarian").getValue().toString());
+                            returnIntent.putExtra("vegan", snapshot.child("tags").child("vegan").getValue().toString());
+                            returnIntent.putExtra("gluten free", snapshot.child("tags").child("gluten free").getValue().toString());
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
 

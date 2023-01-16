@@ -32,7 +32,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class DietActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class DietActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private RecyclerView mDietList;
@@ -72,13 +72,12 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
         Button mGlutenFreeBtn = findViewById(R.id.glutenFreeDietBtn);
         Button mVeganBtn = findViewById(R.id.veganDietBtn);
         Button mAllBtn = findViewById(R.id.allDietBtn);
-        if(mAuth.getCurrentUser().isAnonymous())
-        {
+        if (mAuth.getCurrentUser().isAnonymous()) {
             mAddBtn.setVisibility(View.GONE);
             mLikesBtn.setVisibility(View.GONE);
         }
         mAddBtn.setOnClickListener(view -> {
-            Intent AddDietIntent=new Intent(DietActivity.this,
+            Intent AddDietIntent = new Intent(DietActivity.this,
                     DietAddActivity.class);
             startActivity(AddDietIntent);
         });
@@ -117,11 +116,9 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
 
         //You are here - check home item
         navigationView.setCheckedItem(R.id.nav_diets);
-        if(!mAuth.getCurrentUser().isAnonymous()) {
+        if (!mAuth.getCurrentUser().isAnonymous()) {
             SetProfile();
-        }
-        else
-        {
+        } else {
             userImg.setImageResource(0);
             guestLogin.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_logout).setTitle(R.string.exit);
@@ -149,8 +146,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
                 mDatabaseDiets.child(diet_key).child("Meals").addValueEventListener(new ValueEventListener() {
@@ -160,19 +157,20 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                             mDatabaseDiets.child(diet_key).child("Meals").child(day.getKey()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot meal : snapshot.getChildren()){
+                                    for (DataSnapshot meal : snapshot.getChildren()) {
                                         mDatabaseMeals.child(meal.getKey()).child("Products").addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                for (DataSnapshot product: snapshot.getChildren()){
+                                                for (DataSnapshot product : snapshot.getChildren()) {
                                                     mDatabaseProducts.child(product.getKey()).child("dislikes").addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                            if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                                                            if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                                                 dietViewHolder.mView.findViewById(R.id.dietCard).setVisibility(View.GONE);
                                                                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) dietViewHolder.mView.getLayoutParams();
                                                                 layoutParams.setMargins(0, 0, 0, 0);
-                                                                dietViewHolder.mView.setLayoutParams(layoutParams);}
+                                                                dietViewHolder.mView.setLayoutParams(layoutParams);
+                                                            }
                                                         }
 
                                                         @Override
@@ -226,8 +224,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
 
@@ -251,8 +249,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
 
@@ -276,8 +274,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
 
@@ -287,7 +285,7 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void dietSearch(String searchText) {
-        Query searchQuery = mDatabaseDiets.orderByChild("name").startAt(searchText).endAt(searchText+"\uf8ff");
+        Query searchQuery = mDatabaseDiets.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         FirebaseRecyclerAdapter<Diet, DietViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Diet, DietViewHolder>(
                 Diet.class,
                 R.layout.diet_row,
@@ -301,8 +299,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
 
@@ -327,8 +325,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
                 dietViewHolder.setImage(diet.getImage());
                 dietViewHolder.setRating(diet.getRating());
                 dietViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleDietIntent = new Intent(DietActivity.this,DietSingleActivity.class);
-                    singleDietIntent.putExtra("diet_id",diet_key);
+                    Intent singleDietIntent = new Intent(DietActivity.this, DietSingleActivity.class);
+                    singleDietIntent.putExtra("diet_id", diet_key);
                     startActivity(singleDietIntent);
                 });
 
@@ -337,7 +335,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
         mDietList.setAdapter(firebaseRecyclerAdapter);
 
     }
-    public static class DietViewHolder extends RecyclerView.ViewHolder{
+
+    public static class DietViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final FirebaseAuth mAuth;
 
@@ -348,16 +347,17 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        public void setName(String name){
+        public void setName(String name) {
             TextView diet_name = mView.findViewById(R.id.diet_name);
             diet_name.setText(name);
         }
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView diet_image = mView.findViewById(R.id.diet_image);
             Picasso.get().load(image).into(diet_image);
         }
-        public void setRating(String rating){
+
+        public void setRating(String rating) {
             RatingBar diet_rating = mView.findViewById(R.id.diet_rating);
             diet_rating.setRating(Float.parseFloat(rating));
         }
@@ -398,10 +398,8 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-    {
-        switch (menuItem.getItemId())
-        {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
 
                 Intent intent = new Intent(DietActivity.this, MainScreenActivity.class);
@@ -431,14 +429,12 @@ public class DietActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
+
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
+        } else {
             finish();
         }
     }

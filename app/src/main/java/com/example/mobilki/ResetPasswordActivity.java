@@ -29,7 +29,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mBackBtn.setOnClickListener(view -> {
-            Intent mainIntent = new Intent(ResetPasswordActivity.this,MainActivity.class);
+            Intent mainIntent = new Intent(ResetPasswordActivity.this, MainActivity.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mainIntent);
         });
@@ -37,18 +37,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mResetBtn.setOnClickListener(view -> {
             String email = mEmail.getText().toString().trim();
             if (TextUtils.isEmpty(email)) {
-                Toast.makeText(getApplication(), "Wprowadź email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "Fill email address field", Toast.LENGTH_SHORT).show();
             } else {
                 mAuth.sendPasswordResetEmail(email)
 
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ResetPasswordActivity.this,
-                                        "Wysłano instrukcje do resetowania hasła na podany adres email",
+                                        "Instructions to reset password has been send to provided email",
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(ResetPasswordActivity.this,
-                                        "Brak konta powiązanego z podanym emailem",
+                                        "There is no account with provided email",
                                         Toast.LENGTH_SHORT).show();
                             }
                         });

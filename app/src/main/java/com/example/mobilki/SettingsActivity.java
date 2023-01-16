@@ -83,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         mHeightField = (EditText) findViewById(R.id.SettingsHeightField);
         mWeightField = (EditText) findViewById(R.id.SettingsWeightField);
         Button mSubmitBtn = (Button) findViewById(R.id.SettingsSubmitBtn);
-        radioSexGroup=(RadioGroup)findViewById(R.id.SettingsradioGroup);
+        radioSexGroup = (RadioGroup) findViewById(R.id.SettingsradioGroup);
         TextView mInfo = findViewById(R.id.loginInfo);
         mStorageImage = FirebaseStorage.getInstance().getReference().child("Profile_images");
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -106,7 +106,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_settings);
-        if(!mAuth.getCurrentUser().isAnonymous()) {
+        if (!mAuth.getCurrentUser().isAnonymous()) {
             SetProfile();
             mDatabaseUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -116,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                     mAgeField.setText(snapshot.child("age").getValue().toString());
                     mHeightField.setText(snapshot.child("height").getValue().toString());
                     mWeightField.setText(snapshot.child("weight").getValue().toString());
-                    if(snapshot.child("sex").getValue().toString().equals("m"))
+                    if (snapshot.child("sex").getValue().toString().equals("m"))
                         mBtn.setChecked(true);
                     else
                         fBtn.setChecked(true);
@@ -134,9 +134,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 startActivityForResult(galleryIntent, GALERY_REQUEST);
             });
             mSubmitBtn.setOnClickListener(view -> startSetupAccount());
-        }
-        else
-        {
+        } else {
             mInfo.setVisibility(View.VISIBLE);
             mSetupImageBtn.setVisibility(View.GONE);
             mNameField.setVisibility(View.GONE);
@@ -162,9 +160,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         String height = mHeightField.getText().toString().trim();
         String weight = mWeightField.getText().toString().trim();
         Boolean imageChanged = false;
-        if(imageChanged){
+        if (imageChanged) {
 
-            if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)){
+            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)) {
                 mProgress.setMessage("Saving ...");
                 mProgress.show();
 
@@ -208,20 +206,16 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
                     }
                 })).addOnFailureListener(e -> {
-                    });
+                });
 
 
-
-            } else
-            {
-                Toast.makeText(SettingsActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SettingsActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
             }
-        } else{
-            if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)){
-                mProgress.setMessage("Koczenie konfiguracji ...");
+        } else {
+            if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(weight) && !TextUtils.isEmpty(height)) {
+                mProgress.setMessage("Finishing configuration ...");
                 mProgress.show();
-
-
 
 
                 mDatabaseUsers.child(user_id).child("name").setValue(name);
@@ -229,30 +223,27 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 mDatabaseUsers.child(user_id).child("weight").setValue(weight);
                 mDatabaseUsers.child(user_id).child("height").setValue(height);
                 long calreq;
-                if(radioSexGroup.getCheckedRadioButtonId()==mBtn.getId())
-                {
-                    calreq = Math.round(66+(13.7*Double.parseDouble(weight))+(5*Double.parseDouble(height))-(6.8*Double.parseDouble(age)));
+                if (radioSexGroup.getCheckedRadioButtonId() == mBtn.getId()) {
+                    calreq = Math.round(66 + (13.7 * Double.parseDouble(weight)) + (5 * Double.parseDouble(height)) - (6.8 * Double.parseDouble(age)));
                     mDatabaseUsers.child(user_id).child("sex").setValue("m");
                     mDatabaseUsers.child(user_id).child("calories req").setValue(Long.toString(calreq));
-                }
-                else{
-                    calreq = Math.round(655+(9.6*Double.parseDouble(weight))+(1.8*Double.parseDouble(height))-(4.7*Double.parseDouble(age)));
+                } else {
+                    calreq = Math.round(655 + (9.6 * Double.parseDouble(weight)) + (1.8 * Double.parseDouble(height)) - (4.7 * Double.parseDouble(age)));
                     mDatabaseUsers.child(user_id).child("sex").setValue("f");
                     mDatabaseUsers.child(user_id).child("calories req").setValue(Long.toString(calreq));
                 }
-                long carbohydratesreq = Math.round((calreq*0.55)/4);
-                long proteinsreq = Math.round((calreq*0.15)/4);
-                long fatreq = Math.round((calreq*0.30)/9);
+                long carbohydratesreq = Math.round((calreq * 0.55) / 4);
+                long proteinsreq = Math.round((calreq * 0.15) / 4);
+                long fatreq = Math.round((calreq * 0.30) / 9);
                 mDatabaseUsers.child(user_id).child("carbohydrates req").setValue(Long.toString(carbohydratesreq));
                 mDatabaseUsers.child(user_id).child("proteins req").setValue(Long.toString(proteinsreq));
                 mDatabaseUsers.child(user_id).child("fat req").setValue(Long.toString(fatreq));
                 mProgress.dismiss();
-                Toast.makeText(SettingsActivity.this, "Zmieniono ustawienia profilu", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingsActivity.this, "Account settings has been changed", Toast.LENGTH_LONG).show();
 
 
-            } else
-            {
-                Toast.makeText(SettingsActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SettingsActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -263,7 +254,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
 
             mSetupImageBtn.setImageURI(mImageUri);
@@ -271,8 +262,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     }
 
-    private void SetProfile()
-    {
+    private void SetProfile() {
         mDatabaseUsers.child(mAuth.getUid()).child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -305,10 +295,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-    {
-        switch (menuItem.getItemId())
-        {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 //Go to main screen
                 Intent intent = new Intent(SettingsActivity.this, MainScreenActivity.class);
@@ -343,12 +331,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
+        } else {
             finish();
         }
     }

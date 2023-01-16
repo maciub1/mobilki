@@ -40,13 +40,13 @@ public class MealAddActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseMeals;
     private ProgressDialog mProgress;
-    private  double mCalories=0;
-    private  double mCarbohydrates=0;
-    private  double mFat=0;
-    private  double mProteins=0;
-    private  boolean mGlutenFree=true;
-    private  boolean mVegan=true;
-    private  boolean mVegetarian=true;
+    private double mCalories = 0;
+    private double mCarbohydrates = 0;
+    private double mFat = 0;
+    private double mProteins = 0;
+    private boolean mGlutenFree = true;
+    private boolean mVegan = true;
+    private boolean mVegetarian = true;
     final List<String> product_ids = new ArrayList<>();
     private Button mAcceptBtn;
 
@@ -70,20 +70,19 @@ public class MealAddActivity extends AppCompatActivity {
         mMealSelectImage.setOnClickListener(view -> {
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent,GALLERY_REQUEST);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
         });
         mAddProductToMealBtn.setOnClickListener(v -> {
-            Intent ProductSelectIntent = new Intent(MealAddActivity.this,ProductSelectActivity.class);
-            startActivityForResult(ProductSelectIntent,PRODUCT_REQUEST);
+            Intent ProductSelectIntent = new Intent(MealAddActivity.this, ProductSelectActivity.class);
+            startActivityForResult(ProductSelectIntent, PRODUCT_REQUEST);
         });
         mAcceptBtn.setOnClickListener(v -> addMeal());
     }
 
     private void addMeal() {
         String name_val = mMealName.getText().toString().trim();
-        if(!TextUtils.isEmpty(name_val))
-        {
-            mProgress.setMessage("Dodawanie posiłku ...");
+        if (!TextUtils.isEmpty(name_val)) {
+            mProgress.setMessage("Adding meal ...");
             mProgress.show();
             StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
             final UploadTask uploadTask = filepath.putFile(mImageUri);
@@ -130,9 +129,9 @@ public class MealAddActivity extends AppCompatActivity {
 
                 }
             })).addOnFailureListener(e -> {
-                });
+            });
 
-        }else
+        } else
             Toast.makeText(MealAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
     }
 
@@ -140,29 +139,28 @@ public class MealAddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
 
             mMealSelectImage.setImageURI(mImageUri);
         }
-        if(requestCode==PRODUCT_REQUEST && resultCode == RESULT_OK)
-        {
+        if (requestCode == PRODUCT_REQUEST && resultCode == RESULT_OK) {
             String product_id = data.getStringExtra("product id");
-            Toast.makeText(MealAddActivity.this, "Dodano produkt "+data.getStringExtra("name")+" do posiłku",
+            Toast.makeText(MealAddActivity.this, "Product " + data.getStringExtra("name") + " added to meal",
                     Toast.LENGTH_SHORT).show();
-            mCalories+=Double.parseDouble(data.getStringExtra("calories"));
-            mCarbohydrates+=Double.parseDouble(data.getStringExtra("carbohydrates"));
-            mFat+=Double.parseDouble(data.getStringExtra("fat"));
-            mProteins+=Double.parseDouble(data.getStringExtra("proteins"));
+            mCalories += Double.parseDouble(data.getStringExtra("calories"));
+            mCarbohydrates += Double.parseDouble(data.getStringExtra("carbohydrates"));
+            mFat += Double.parseDouble(data.getStringExtra("fat"));
+            mProteins += Double.parseDouble(data.getStringExtra("proteins"));
             product_ids.add(product_id);
-            if(data.getStringExtra("vegetarian").equals("0"))
-                mVegetarian=false;
-            if(data.getStringExtra("vegan").equals("0"))
-                mVegan=false;
-            if(data.getStringExtra("gluten free").equals("0"))
-                mGlutenFree=false;
+            if (data.getStringExtra("vegetarian").equals("0"))
+                mVegetarian = false;
+            if (data.getStringExtra("vegan").equals("0"))
+                mVegan = false;
+            if (data.getStringExtra("gluten free").equals("0"))
+                mGlutenFree = false;
             mAcceptBtn.setVisibility(View.VISIBLE);
-            mAddProductToMealBtn.setText("Dodaj kolejny produkt");
+            mAddProductToMealBtn.setText("Add another product");
 
 
         }

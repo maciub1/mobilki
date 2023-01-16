@@ -3,7 +3,7 @@ package com.example.mobilki;
 public class Product {
     private String name, image, calories, carbohydrates, proteins, fat;
 
-    public Product(){
+    public Product() {
 
     }
 

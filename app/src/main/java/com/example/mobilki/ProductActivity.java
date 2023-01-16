@@ -72,8 +72,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
         Button mAllBtn = findViewById(R.id.allBtn);
 
 
-        if(mAuth.getCurrentUser().isAnonymous())
-        {
+        if (mAuth.getCurrentUser().isAnonymous()) {
             mAddBtn.setVisibility(View.GONE);
             mLikesBtn.setVisibility(View.GONE);
             mDislikesBtn.setVisibility(View.GONE);
@@ -92,7 +91,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
         mAllBtn.setOnClickListener(v -> onStart());
 
         mAddBtn.setOnClickListener(view -> {
-            Intent AddProductIntent=new Intent(ProductActivity.this,
+            Intent AddProductIntent = new Intent(ProductActivity.this,
                     ProductAddActivity.class);
             startActivity(AddProductIntent);
         });
@@ -127,11 +126,9 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
         //You are here - check home item
         navigationView.setCheckedItem(R.id.nav_products);
 
-        if(!mAuth.getCurrentUser().isAnonymous()) {
+        if (!mAuth.getCurrentUser().isAnonymous()) {
             SetProfile();
-        }
-        else
-        {
+        } else {
             userImg.setImageResource(0);
             guestLogin.setVisibility(View.VISIBLE);
             navigationView.getMenu().findItem(R.id.nav_logout).setTitle(R.string.exit);
@@ -162,8 +159,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -173,18 +170,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -208,17 +204,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -234,7 +229,6 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                         }
                     });
                 });
-
 
 
             }
@@ -263,8 +257,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -274,18 +268,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -309,17 +302,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -363,8 +355,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -374,18 +366,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -409,17 +400,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -454,15 +444,15 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 mDatabaseProducts
         ) {
             @Override
-            protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int  i) {
+            protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
                 mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                    if (!task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
                         productViewHolder.mView.findViewById(R.id.card).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
                         productViewHolder.mView.setLayoutParams(layoutParams);
-                    }else{
+                    } else {
                         productViewHolder.mView.findViewById(R.id.card).setVisibility(View.VISIBLE);
 
                     }
@@ -477,8 +467,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -488,18 +478,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -523,17 +512,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -565,15 +553,15 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 mDatabaseProducts
         ) {
             @Override
-            protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int  i) {
+            protected void populateViewHolder(ProductViewHolder productViewHolder, Product product, int i) {
                 String product_key = getRef(i).getKey();
                 mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                    if(!task.getResult().hasChild(mAuth.getCurrentUser().getUid())){
+                    if (!task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
                         productViewHolder.mView.findViewById(R.id.card).setVisibility(View.GONE);
                         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) productViewHolder.mView.getLayoutParams();
                         layoutParams.setMargins(0, 0, 0, 0);
                         productViewHolder.mView.setLayoutParams(layoutParams);
-                    }else{
+                    } else {
                         productViewHolder.mView.findViewById(R.id.card).setVisibility(View.VISIBLE);
 
                     }
@@ -588,8 +576,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -599,18 +587,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -634,17 +621,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -668,7 +654,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
     }
 
     private void productSearch(String searchText) {
-        Query searchQuery = mDatabaseProducts.orderByChild("name").startAt(searchText).endAt(searchText+"\uf8ff");
+        Query searchQuery = mDatabaseProducts.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         //Query searchQuery = mDatabaseProducts.orderByChild("tags/gluten free").equalTo("1");
 
         FirebaseRecyclerAdapter<Product, ProductViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(
@@ -688,8 +674,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -699,20 +685,19 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes")
                                             .child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych",
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list",
                                                     Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes")
                                                     .child(mAuth.getCurrentUser().getUid()).
                                                     setValue(mAuth.getCurrentUser().getEmail());
@@ -738,17 +723,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -793,8 +777,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                 productViewHolder.setDislikeBtn(product_key);
 
                 productViewHolder.mView.setOnClickListener(v -> {
-                    Intent singleProductIntent = new Intent(ProductActivity.this,ProductSingleActivity.class);
-                    singleProductIntent.putExtra("product_id",product_key);
+                    Intent singleProductIntent = new Intent(ProductActivity.this, ProductSingleActivity.class);
+                    singleProductIntent.putExtra("product_id", product_key);
                     startActivity(singleProductIntent);
 
                 });
@@ -805,18 +789,17 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("likes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
 
-                                } else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("dislikes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście nielubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to disliked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("likes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -842,17 +825,16 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
                     mDatabaseProducts.child(product_key).child("dislikes").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(mProcessLike){
-                                if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                            if (mProcessLike) {
+                                if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                                     mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).removeValue();
                                     mProcessLike = false;
-                                }else{
+                                } else {
                                     mDatabaseProducts.child(product_key).child("likes").get().addOnCompleteListener(task -> {
-                                        if(task.getResult().hasChild(mAuth.getCurrentUser().getUid()))
-                                        {
-                                            Toast.makeText(ProductActivity.this, "Produkt jest już na liście lubianych", Toast.LENGTH_LONG).show();
+                                        if (task.getResult().hasChild(mAuth.getCurrentUser().getUid())) {
+                                            Toast.makeText(ProductActivity.this, "Product is already added to liked list", Toast.LENGTH_LONG).show();
                                             mProcessLike = false;
-                                        } else{
+                                        } else {
                                             mDatabaseProducts.child(product_key).child("dislikes").child(mAuth.getCurrentUser().getUid()).setValue(mAuth.getCurrentUser().getEmail());
                                             mProcessLike = false;
                                         }
@@ -884,7 +866,7 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
         super.onPointerCaptureChanged(hasCapture);
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final FirebaseAuth mAuth;
 
@@ -900,22 +882,22 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
             mLikeBtn = mView.findViewById(R.id.likeBtn);
             mDislikeBtn = mView.findViewById(R.id.dislikeBtn);
             mAuth = FirebaseAuth.getInstance();
-            if(mAuth.getCurrentUser().isAnonymous()){
+            if (mAuth.getCurrentUser().isAnonymous()) {
                 mLikeBtn.setVisibility(View.GONE);
                 mDislikeBtn.setVisibility(View.GONE);
             }
 
         }
 
-        public void setLikeBtn(String product_key){
+        public void setLikeBtn(String product_key) {
             mDatabaseLike = FirebaseDatabase.getInstance().getReference().child("Products").child(product_key).child("likes");
             mDatabaseLike.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                    if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                         mLikeBtn.setImageResource(R.mipmap.baseline_thumb_up_alt_black_24);
 
-                    }else{
+                    } else {
                         mLikeBtn.setImageResource(R.mipmap.baseline_thumb_up_off_alt_black_24);
 
                     }
@@ -931,15 +913,15 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
 
         }
 
-        public void setDislikeBtn(String product_key){
+        public void setDislikeBtn(String product_key) {
             mDatabaseDislike = FirebaseDatabase.getInstance().getReference().child("Products").child(product_key).child("dislikes");
             mDatabaseDislike.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                    if (snapshot.hasChild(mAuth.getCurrentUser().getUid())) {
                         mDislikeBtn.setImageResource(R.mipmap.baseline_thumb_down_alt_black_24);
 
-                    }else{
+                    } else {
                         mDislikeBtn.setImageResource(R.mipmap.baseline_thumb_down_off_alt_black_24);
 
                     }
@@ -955,26 +937,25 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
 
         }
 
-        public void setName(String name){
+        public void setName(String name) {
             TextView product_name = mView.findViewById(R.id.product_name);
             product_name.setText(name);
         }
 
-        public void setCalories(String calories){
+        public void setCalories(String calories) {
             TextView product_calories = mView.findViewById(R.id.product_calories);
-            product_calories.setText(calories+"kcal");
+            product_calories.setText(calories + "kcal");
         }
 
 
-        public void setImage(String image){
+        public void setImage(String image) {
             ImageView product_image = mView.findViewById(R.id.product_image);
             Picasso.get().load(image).into(product_image);
         }
 
     }
 
-    private void SetProfile()
-    {
+    private void SetProfile() {
         mDatabaseUsers.child(mAuth.getUid()).child("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -1007,10 +988,8 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-    {
-        switch (menuItem.getItemId())
-        {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 //Go to main screen
                 Intent intent = new Intent(ProductActivity.this, MainScreenActivity.class);
@@ -1048,12 +1027,9 @@ public class ProductActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else
-        {
+        } else {
             finish();
         }
     }

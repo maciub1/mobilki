@@ -48,14 +48,14 @@ public class DietAddActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseDiets;
     private DatabaseReference mMeals;
     private ProgressDialog mProgress;
-    private  double mCalories=0;
-    private  double mCarbohydrates=0;
-    private  double mFat=0;
-    private  double mProteins=0;
-    private  boolean mGlutenFree=true;
-    private  boolean mVegan=true;
-    private  boolean mVegetarian=true;
-    private int day=1;
+    private double mCalories = 0;
+    private double mCarbohydrates = 0;
+    private double mFat = 0;
+    private double mProteins = 0;
+    private boolean mGlutenFree = true;
+    private boolean mVegan = true;
+    private boolean mVegetarian = true;
+    private int day = 1;
     final List<String> meals_ids = new ArrayList<>();
     private Button mAcceptBtn;
     private String mMealsStr;
@@ -83,31 +83,29 @@ public class DietAddActivity extends AppCompatActivity {
         mFatField = findViewById(R.id.fatField);
         mProteinsField = findViewById(R.id.proteinsField);
         mCarbohydratesField = findViewById(R.id.carbohydratesField);
-        mMealsStr="";
+        mMealsStr = "";
         mAddedMealsField = findViewById(R.id.AddedMeals);
         mDietSelectImage.setOnClickListener(view -> {
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent,GALLERY_REQUEST);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
         });
         mAddMealToDietBtn.setOnClickListener(v -> {
-            Intent ProductSelectIntent = new Intent(DietAddActivity.this,MealSelectActivity.class);
-            startActivityForResult(ProductSelectIntent,MEAL_REQUEST);
+            Intent ProductSelectIntent = new Intent(DietAddActivity.this, MealSelectActivity.class);
+            startActivityForResult(ProductSelectIntent, MEAL_REQUEST);
         });
         mAcceptBtn.setOnClickListener(v -> addDiet());
-        mNextDayBtn.setOnClickListener(v -> mMeals=addDay(mMeals));
+        mNextDayBtn.setOnClickListener(v -> mMeals = addDay(mMeals));
     }
 
     private void addDiet() {
         mProgress.setMessage("Adding diet ...");
         mProgress.show();
 
-        if(day==1)
-        {
+        if (day == 1) {
             String name_val = mDietName.getText().toString().trim();
             String desc_val = mDietDesc.getText().toString();
-            if(!TextUtils.isEmpty(name_val) && !TextUtils.isEmpty(desc_val))
-            {
+            if (!TextUtils.isEmpty(name_val) && !TextUtils.isEmpty(desc_val)) {
 
                 StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
                 final UploadTask uploadTask = filepath.putFile(mImageUri);
@@ -151,13 +149,14 @@ public class DietAddActivity extends AppCompatActivity {
 
                     }
                 })).addOnFailureListener(e -> {
-                    });
-            } else{
+                });
+            } else {
                 mProgress.dismiss();
-                Toast.makeText(DietAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();}
-        } else{
+                Toast.makeText(DietAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
+            }
+        } else {
             mProgress.dismiss();
-            mMeals=addDay(mMeals);
+            mMeals = addDay(mMeals);
             Intent mealIntent = new Intent(DietAddActivity.this, DietActivity.class);
             mealIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(mealIntent);
@@ -167,7 +166,7 @@ public class DietAddActivity extends AppCompatActivity {
     private DatabaseReference addDay(DatabaseReference mMeals) {
         mProgress.setMessage("Adding day ...");
         mProgress.show();
-        if(day==1) {
+        if (day == 1) {
             String name_val = mDietName.getText().toString().trim();
             String desc_val = mDietDesc.getText().toString();
             if (!TextUtils.isEmpty(name_val) && !TextUtils.isEmpty(desc_val)) {
@@ -209,14 +208,13 @@ public class DietAddActivity extends AppCompatActivity {
                         mProgress.dismiss();
                     }
                 })).addOnFailureListener(e -> {
-                    });
+                });
                 return newDiet.child("Meals");
-            } else{
+            } else {
                 mProgress.dismiss();
                 Toast.makeText(DietAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
             }
-        } else
-        {
+        } else {
             for (String id : meals_ids) {
                 mMeals.child(Integer.toString(day)).child(id).setValue("meal id");
             }
@@ -236,12 +234,12 @@ public class DietAddActivity extends AppCompatActivity {
         mCarbohydratesField.setText("Carbohydrates: 0");
         mProteinsField.setText("Proteins: 0");
         mFatField.setText("Fat: 0");
-        mCarbohydrates=0;
-        mCalories=0;
-        mProteins=0;
-        mFat=0;
+        mCarbohydrates = 0;
+        mCalories = 0;
+        mProteins = 0;
+        mFat = 0;
         meals_ids.clear();
-        mMealsStr="";
+        mMealsStr = "";
         mAddMealToDietBtn.setText("Add meal");
         mAcceptBtn.setVisibility(View.GONE);
         mNextDayBtn.setVisibility(View.GONE);
@@ -251,35 +249,33 @@ public class DietAddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
 
             mDietSelectImage.setImageURI(mImageUri);
         }
-        if(requestCode==MEAL_REQUEST && resultCode == RESULT_OK)
-        {
+        if (requestCode == MEAL_REQUEST && resultCode == RESULT_OK) {
             String meal_id = data.getStringExtra("meal id");
-            mMealsStr+=data.getStringExtra("name")+"\n";
-            mCalories+=Double.parseDouble(data.getStringExtra("calories"));
-            mCarbohydrates+=Double.parseDouble(data.getStringExtra("carbohydrates"));
-            mFat+=Double.parseDouble(data.getStringExtra("fat"));
-            mProteins+=Double.parseDouble(data.getStringExtra("proteins"));
+            mMealsStr += data.getStringExtra("name") + "\n";
+            mCalories += Double.parseDouble(data.getStringExtra("calories"));
+            mCarbohydrates += Double.parseDouble(data.getStringExtra("carbohydrates"));
+            mFat += Double.parseDouble(data.getStringExtra("fat"));
+            mProteins += Double.parseDouble(data.getStringExtra("proteins"));
             meals_ids.add(meal_id);
-            if(data.getStringExtra("vegetarian").equals("0"))
-                mVegetarian=false;
-            if(data.getStringExtra("vegan").equals("0"))
-                mVegan=false;
-            if(data.getStringExtra("gluten free").equals("0"))
-                mGlutenFree=false;
+            if (data.getStringExtra("vegetarian").equals("0"))
+                mVegetarian = false;
+            if (data.getStringExtra("vegan").equals("0"))
+                mVegan = false;
+            if (data.getStringExtra("gluten free").equals("0"))
+                mGlutenFree = false;
             mAcceptBtn.setVisibility(View.VISIBLE);
-            mAddMealToDietBtn.setText("Dodaj kolejny posiłek");
+            mAddMealToDietBtn.setText("Add another meal");
             mNextDayBtn.setVisibility(View.VISIBLE);
-            mCaloriesField.setText("Kalorie: "+ mCalories);
-            mCarbohydratesField.setText("Węglowodany: "+ mCarbohydrates);
-            mProteinsField.setText("Białko: "+ mProteins);
-            mFatField.setText("Tłuszcz: "+ mFat);
+            mCaloriesField.setText("Calories: " + mCalories);
+            mCarbohydratesField.setText("Carbohydrates " + mCarbohydrates);
+            mProteinsField.setText("Proteins: " + mProteins);
+            mFatField.setText("Fat: " + mFat);
             mAddedMealsField.setText(mMealsStr);
-
 
 
         }

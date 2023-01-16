@@ -75,7 +75,7 @@ public class ProductAddActivity extends AppCompatActivity {
         mProductSelectImage.setOnClickListener(view -> {
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent,GALLERY_REQUEST);
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
         });
 
         mSubmitBtn.setOnClickListener(view -> addProduct());
@@ -89,10 +89,10 @@ public class ProductAddActivity extends AppCompatActivity {
         String proteins_val = mProteins.getText().toString().trim();
         String fat_val = mFat.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(name_val) && !TextUtils.isEmpty(calories_val)
+        if (!TextUtils.isEmpty(name_val) && !TextUtils.isEmpty(calories_val)
                 && !TextUtils.isEmpty(carbohydrates_val) && !TextUtils.isEmpty(proteins_val)
-                && !TextUtils.isEmpty(fat_val) && mImageUri != null){
-            mProgress.setMessage("Dodawanie produktu ...");
+                && !TextUtils.isEmpty(fat_val) && mImageUri != null) {
+            mProgress.setMessage("Adding product ...");
             mProgress.show();
 
             StorageReference filepath = mStorageImage.child(mImageUri.getLastPathSegment());
@@ -141,10 +141,10 @@ public class ProductAddActivity extends AppCompatActivity {
 
                 }
             })).addOnFailureListener(e -> {
-                });
+            });
 
-        } else{
-            Toast.makeText(ProductAddActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(ProductAddActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -153,7 +153,7 @@ public class ProductAddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
 
             mProductSelectImage.setImageURI(mImageUri);
@@ -165,7 +165,7 @@ public class ProductAddActivity extends AppCompatActivity {
         boolean checked = ((CheckBox) view).isChecked();
 
         // Check which checkbox was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.vegetarian:
                 if (checked)
                     tags.add("vegetarian");

@@ -2,7 +2,8 @@ package com.example.mobilki;
 
 public class Meal {
     private String name, image, calories, carbohydrates, proteins, fat;
-    public Meal(){
+
+    public Meal() {
 
     }
 

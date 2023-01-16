@@ -49,35 +49,35 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(password2)) {
             if (!password.equals(password2)) {
-                Toast.makeText(RegisterActivity.this, "Hasła nie są takie same", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Passwords is not the same", Toast.LENGTH_LONG).show();
             } else if (password.length() < 6) {
-                Toast.makeText(RegisterActivity.this, "Hasło musi mieć przynajmniej 6 znaków",
+                Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters long",
                         Toast.LENGTH_SHORT).show();
             } else {
                 mProgress.setMessage("Rejestracja ...");
                 mProgress.show();
 
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        mProgress.dismiss();
-                        Intent mainIntent = new Intent(RegisterActivity.this, SetupActivity.class);
-                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(mainIntent);
+                            if (task.isSuccessful()) {
+                                mProgress.dismiss();
+                                Intent mainIntent = new Intent(RegisterActivity.this, SetupActivity.class);
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(mainIntent);
 
-                    } else {
-                        mProgress.dismiss();
-                        Toast.makeText(RegisterActivity.this, "Podany adres email jest już przypisany do innego konta",
-                                Toast.LENGTH_SHORT).show();
+                            } else {
+                                mProgress.dismiss();
+                                Toast.makeText(RegisterActivity.this, "There is already account with provided email address",
+                                        Toast.LENGTH_SHORT).show();
 
-                    }
+                            }
 
-                }
+                        }
 
                 );
             }
 
         } else {
-            Toast.makeText(RegisterActivity.this, "Wypenij wszystkie pola", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "Fill all fields", Toast.LENGTH_LONG).show();
         }
     }
 
