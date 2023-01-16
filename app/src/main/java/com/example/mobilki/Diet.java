@@ -1,7 +1,9 @@
 package com.example.mobilki;
 
 public class Diet {
-    private String name, image, desc, rating;
+    private String name;
+    private String image;
+    private String rating;
 
     public Diet() {
 
@@ -10,7 +12,6 @@ public class Diet {
     public Diet(String name, String image, String desc, String rating) {
         this.name = name;
         this.image = image;
-        this.desc = desc;
         this.rating = rating;
     }
 

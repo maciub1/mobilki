@@ -1,7 +1,9 @@
 package com.example.mobilki;
 
 public class Product {
-    private String name, image, calories, carbohydrates, proteins, fat;
+    private String name;
+    private String image;
+    private String calories;
 
     public Product() {
 
@@ -11,9 +13,6 @@ public class Product {
         this.name = name;
         this.image = image;
         this.calories = calories;
-        this.carbohydrates = carbohydrates;
-        this.proteins = proteins;
-        this.fat = fat;
     }
 
     public String getName() {
